@@ -1,2 +1,2 @@
 # ParnasPacemaker
-3K04 gang
+3K04 Project
