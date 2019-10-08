@@ -1,9 +1,41 @@
 const express = require('express');
 const router = new express.Router();
+const knex = require('../db/knex')
 
-router.get('/test', function(req, res) {
-    console.log('another one');
-    res.send('hello')
+router.post('/login', function(req, res) {
+    let username = req.body.username;
+    let password = req.body.password;
+
+    knex('users')
+    .where({username, password})
+    .then((user)=>{
+        if(user){
+            res.status(200).json({message: "succesfully logged in up"})
+        }
+        else{
+            res.status(403).json({message: "user not found"})
+        }
+    })
+    .catch(err=>{
+        console.log(err);
+        res.status(500).json(err);
+    })
+    
+});
+
+router.post('/signup', function(req, res) {
+    let username = req.body.username;
+    let password = req.body.password;
+
+    knex('users')
+    .insert({username, password})
+    .then(()=>{
+        res.status(200).json({message: "succesfully signed up"})
+    })
+    .catch(err=>{
+        console.log(err);
+        res.status(500).json(err);
+    })
 });
 
 module.exports = router;
