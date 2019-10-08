@@ -1,10 +1,69 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import SignIn from './SignIn.js';
+import SignUp from './SignUp';
 
-function App() {
+class App extends React.Component {
+
+  showLoginBox() {
+    this.setState({isLoginOpen: true, isRegisterOpen: false});
+  }
+
+  showRegisterBox() {
+    this.setState({isRegisterOpen: true, isLoginOpen: false});
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoginOpen: true,
+      isRegisterOpen: false
+    };
+  }
+
+  render() {
+
+    return (
+      <div className="root-container">
+        <div className="box-container">
+          {this.state.isLoginOpen && <SignIn/>}
+          {this.state.isRegisterOpen && <SignUp/>}
+        </div>
+
+        <div className="box-controller">
+          <div
+            className={"controller " + (this.state.isLoginOpen
+            ? "selected-controller"
+            : "")}
+            onClick={this
+            .showLoginBox
+            .bind(this)}>
+            Login
+          </div>
+          <div
+            className={"controller " + (this.state.isRegisterOpen
+            ? "selected-controller"
+            : "")}
+            onClick={this
+            .showRegisterBox
+            .bind(this)}>
+            Register
+          </div>
+        </div>
+
+      </div>
+
+    );
+  }
+
+}
+
+export default App;
+
+/* function App() {
   return (
-    <div className="App">
+    <div className="">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -23,4 +82,4 @@ function App() {
   );
 }
 
-export default App;
+export default App; */
