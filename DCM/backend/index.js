@@ -6,11 +6,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const users = require('./routes/users');
+const interface = require('./routes/interface');
 
 require('dotenv').config();
 
 
-app.use('/api', users);
+app.use('/', users);
+app.use('/', interface);
 
 app.listen(process.env.PORT, function() {
   console.info("==> 🌎 Peep port %s.", process.env.PORT);
