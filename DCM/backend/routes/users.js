@@ -28,14 +28,23 @@ router.post('/signup', function(req, res) {
     let password = req.body.password;
 
     knex('users')
-    .insert({username, password})
-    .then(()=>{
-        res.status(200).json({message: "succesfully signed up"})
-    })
-    .catch(err=>{
-        console.log(err);
-        res.status(500).json(err);
-    })
+    .select('*')
+    .then(users=>{
+        if(users.length < 10){
+            knex('users')
+            .insert({username, password})
+            .then(()=>{
+                res.status(200).json({message: "succesfully signed up"})
+            })
+            .catch(err=>{
+                console.log(err);
+                res.status(500).json(err);
+            })
+        }
+        else{
+            res.status(500).json({message: "more than 10 users already signed up"});
+        }
+    });
 });
 
 module.exports = router;
