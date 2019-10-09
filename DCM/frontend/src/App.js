@@ -6,20 +6,20 @@ import logo from './pacemaker_logo.png';
 
 class App extends React.Component {
 
-  showLoginBox() {
-    this.setState({isLoginOpen: true, isRegisterOpen: false});
-  }
-
-  showRegisterBox() {
-    this.setState({isRegisterOpen: true, isLoginOpen: false});
-  }
-
   constructor(props) {
     super(props);
     this.state = {
       isLoginOpen: true,
       isRegisterOpen: false
     };
+  }
+
+  showLoginBox() {
+    this.setState({isLoginOpen: true, isRegisterOpen: false});
+  }
+
+  showRegisterBox() {
+    this.setState({isRegisterOpen: true, isLoginOpen: false});
   }
 
   render() {
@@ -32,11 +32,6 @@ class App extends React.Component {
           <h1>Welcome to ParnasPacemaker!</h1>
         </div>
         
-        <div className="box-container">
-          {this.state.isLoginOpen && <SignIn/>}
-          {this.state.isRegisterOpen && <SignUp/>}
-        </div>
-
         <div className="box-controller">
           <div
             className={"controller " + (this.state.isLoginOpen
@@ -56,6 +51,11 @@ class App extends React.Component {
             .bind(this)}>
             Register
           </div>
+        </div>
+
+        <div className="box-container">
+          {this.state.isLoginOpen && <SignIn/>}
+          {this.state.isRegisterOpen && <SignUp/>}
         </div>
 
       </div>
