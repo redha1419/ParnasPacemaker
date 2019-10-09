@@ -1,8 +1,8 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import SignIn from './SignIn.js';
 import SignUp from './SignUp';
+import logo from './pacemaker_logo.png';
 
 class App extends React.Component {
 
@@ -26,6 +26,12 @@ class App extends React.Component {
 
     return (
       <div className="root-container">
+
+        <div className="title-container">
+          <img src={logo} alt="logo"/>
+          <h1>Welcome to ParnasPacemaker!</h1>
+        </div>
+        
         <div className="box-container">
           {this.state.isLoginOpen && <SignIn/>}
           {this.state.isRegisterOpen && <SignUp/>}

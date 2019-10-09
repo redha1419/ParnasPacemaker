@@ -7,7 +7,11 @@ class SignIn extends React.Component {
     this.state = {};
   }
 
-  submitLogin(e) {}
+  submitLogin(e) {
+      //ask backend, give credentials
+      //if success route to next page
+      //else display text
+  }
 
   render() {
     return (

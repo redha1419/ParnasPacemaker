@@ -15,6 +15,11 @@ body,
     flex-direction: column;
 }
 
+.title-container {
+  display: inline-block;
+  text-align: center;
+}
+
 .box-controller {
     visibility: visible;
     display: -webkit-box;
