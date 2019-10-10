@@ -1,5 +1,9 @@
 import React from 'react';
+import {Route} from 'react-router-dom';
 import AOO from './AOO';
+import VOO from './VOO';
+import AAI from './AAI';
+import VVI from './VVI';
 
 class PacingInterface extends React.Component {
 
@@ -22,6 +26,7 @@ class PacingInterface extends React.Component {
         isVVI: false
         }
       );
+      this.props.history.push('/pacing-interface/AOO');
     }
   
     showVOOBox() {
@@ -32,6 +37,7 @@ class PacingInterface extends React.Component {
           isVVI: false
           }
         );
+        this.props.history.push('/pacing-interface/VOO');
     }
 
     showAAIBox() {
@@ -42,6 +48,8 @@ class PacingInterface extends React.Component {
           isVVI: false
           }
         );
+        this.props.history.push('/pacing-interface/AAI');
+
     }
 
     showVVIBox() {
@@ -52,13 +60,13 @@ class PacingInterface extends React.Component {
           isVVI: true
           }
         );
+        this.props.history.push('/pacing-interface/VVI');
     }
   
     render() {
   
       return (
         <div className="root-container">
-          
           <div className="box-controller">
             <div
               className={"controller " + (this.state.isAOO
@@ -97,9 +105,12 @@ class PacingInterface extends React.Component {
               VVI
             </div>
           </div>
-  
+          
           <div className="interface-container">
-            {this.state.isAOO && <AOO/>}
+            <Route path="/pacing-interface/AOO" exact component={AOO} />
+            <Route path="/pacing-interface/VOO" exact component={VOO} />
+            <Route path="/pacing-interface/AAI" exact component={AAI} />
+            <Route path="/pacing-interface/VVI" exact component={VVI} />
           </div>
   
         </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-class AOO extends React.Component {
+class VVI extends React.Component {
 
     constructor(props) {
       super(props);
@@ -9,7 +9,6 @@ class AOO extends React.Component {
     
     render() {
       return (
-
           <div className="box">
   
             <div className="input-group2">
@@ -29,7 +28,7 @@ class AOO extends React.Component {
             </div>
 
             <div className="input-group2">
-              <label>Atrial Amplitude</label>
+              <label>Ventricular Amplitude</label>
               <input
                 type="text"
                 name="upper"
@@ -37,7 +36,15 @@ class AOO extends React.Component {
             </div>
 
             <div className="input-group2">
-              <label>Atrial Pulse Width</label>
+              <label>Ventricular Pulse Width</label>
+              <input
+                type="text"
+                name="upper"
+                className="login-input"/>
+            </div>
+
+            <div className="input-group2">
+              <label>VRP</label>
               <input
                 type="text"
                 name="upper"
@@ -53,4 +60,4 @@ class AOO extends React.Component {
   
   }
 
-  export default AOO;
+  export default VVI;

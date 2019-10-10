@@ -1,6 +1,6 @@
 import React from 'react';
 
-class AOO extends React.Component {
+class AAI extends React.Component {
 
     constructor(props) {
       super(props);
@@ -9,7 +9,6 @@ class AOO extends React.Component {
     
     render() {
       return (
-
           <div className="box">
   
             <div className="input-group2">
@@ -43,6 +42,14 @@ class AOO extends React.Component {
                 name="upper"
                 className="login-input"/>
             </div>
+
+            <div className="input-group2">
+              <label>ARP</label>
+              <input
+                type="text"
+                name="upper"
+                className="login-input"/>
+            </div>
   
             <button
               type="button"
@@ -53,4 +60,4 @@ class AOO extends React.Component {
   
   }
 
-  export default AOO;
+  export default AAI;

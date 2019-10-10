@@ -1,6 +1,4 @@
 import React from 'react';
-import PacingInterface from './PacingInterface';
-import {Route, Link} from 'react-router-dom';
 
 class SignIn extends React.Component {
 
@@ -19,10 +17,8 @@ class SignIn extends React.Component {
       this.setState({
         isLogin: true
       });
-      this.props.history.push('/pacing-interface');
+      this.props.history.push('/pacing-interface/AOO');
   }
-
-
 
   render() {
 

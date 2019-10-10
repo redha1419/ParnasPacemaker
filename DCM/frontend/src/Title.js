@@ -1,11 +1,8 @@
 import React from 'react';
 import './App.css';
-import SignIn from './SignIn.js';
-import SignUp from './SignUp';
 import logo from './pacemaker_logo.png';
-import {BrowserRouter, Route, Link} from 'react-router-dom';
-import PacingInterface from './PacingInterface';
-import Controller from './Controller';
+import {Link} from 'react-router-dom';
+
 
 function Title () {
 
