@@ -18,6 +18,7 @@ body,
 .title-container {
   display: inline-block;
   text-align: center;
+  text-decoration: none;
 }
 
 .box-controller {
@@ -40,6 +41,11 @@ body,
     height: 100%;
     line-height: 2;
     cursor: pointer;
+    text-decoration: none;
+}
+.controller:hover {
+    color: #417cef;
+    text-decoration: none;
 }
 
 .selected-controller {
@@ -73,6 +79,11 @@ body,
 
 .inner-container.show {
     visibility: visible;
+}
+
+.title:hover{
+    color: #cf5113;
+    text-decoration: none;
 }
 
 .header {
