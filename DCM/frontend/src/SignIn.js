@@ -1,21 +1,32 @@
 import React from 'react';
+import PacingInterface from './PacingInterface';
 
 class SignIn extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isLogin: false
+    };
+
   }
 
   submitLogin(e) {
       //ask backend, give credentials
       //if success route to next page
       //else display text
+      this.setState({
+        isLogin: true
+      });
   }
 
+
+
   render() {
+
     return (
       <div className="inner-container">
+       {this.state.isLogin && <PacingInterface/>}
         <div className="header">
           Login
         </div>

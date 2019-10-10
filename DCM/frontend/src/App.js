@@ -3,6 +3,7 @@ import './App.css';
 import SignIn from './SignIn.js';
 import SignUp from './SignUp';
 import logo from './pacemaker_logo.png';
+import PacingInterface from './PacingInterface';
 
 class App extends React.Component {
 
