@@ -1,16 +1,35 @@
 import React from 'react';
+import axios from 'axios';
 
 class SignUp extends React.Component {
 
     constructor(props) {
       super(props);
-      this.state = {};
+      this.state = {
+        username: '',
+        password: ''
+      };
     }
   
     submitRegister(e) {
-        //ask backend, give credentials
+      //ask backend, give credentials
       //if success route to next page
       //else display text
+
+      /* 
+      this.setState.username = document.getElementById('username').value;
+      this.setState.password = document.getElementById('password').value;
+      axios.post('http://localhost:3000/signup',  {
+        username: this.state.username,
+        password: this.state.password
+        })
+        .then( res =>{
+          console.log(res);
+          console.log(res.data);
+        })
+        .catch(err =>{
+          console.log(err);
+      }) */
     }
   
     render() {
@@ -26,7 +45,7 @@ class SignUp extends React.Component {
                 <label htmlFor="username">Username</label>
                 <input
                   type="text"
-                  name="username"
+                  id="username"
                   className="login-input"
                   placeholder="Username"/>
               </div>
@@ -35,7 +54,7 @@ class SignUp extends React.Component {
                 <label htmlFor="password">Password</label>
                 <input
                   type="password"
-                  name="password"
+                  id="password"
                   className="login-input"
                   placeholder="Password"/>
               </div>

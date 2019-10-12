@@ -1,11 +1,13 @@
 import React from 'react';
+import axios from 'axios';
 
 class SignIn extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      isLogin: false
+      username: '',
+      password: ''
     };
 
   }
@@ -14,9 +16,22 @@ class SignIn extends React.Component {
       //ask backend, give credentials
       //if success route to next page
       //else display text
-      this.setState({
-        isLogin: true
-      });
+      
+      /*
+      this.setState.username = document.getElementById('username').value;
+      this.setState.password = document.getElementById('password').value;
+      axios.post('http://localhost:3000/login',  {
+        username: this.state.username,
+        password: this.state.password
+        })
+        .then( res =>{
+          console.log(res);
+          console.log(res.data);
+          //this.props.history.push('/pacing-interface/AOO');
+        })
+        .catch(err =>{
+          console.log(err);
+      }) */
       this.props.history.push('/pacing-interface/AOO');
   }
 
@@ -34,7 +49,7 @@ class SignIn extends React.Component {
               <label htmlFor="username">Username</label>
               <input
                 type="text"
-                name="username"
+                id="username"
                 className="login-input"
                 placeholder="Username"/>
             </div>
@@ -43,7 +58,7 @@ class SignIn extends React.Component {
               <label htmlFor="password">Password</label>
               <input
                 type="password"
-                name="password"
+                id="password"
                 className="login-input"
                 placeholder="Password"/>
             </div>
