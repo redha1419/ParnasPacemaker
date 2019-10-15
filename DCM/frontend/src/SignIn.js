@@ -21,8 +21,8 @@ class SignIn extends React.Component {
       let username = document.getElementById('username').value;
       let password = document.getElementById('password').value;
       axios.post('http://localhost:3000/login',  {
-        username: this.state.username,
-        password: this.state.password
+        username,
+        password
         })
         .then( res =>{
           console.log(res);
