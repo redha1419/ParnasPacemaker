@@ -16,20 +16,25 @@ class SignUp extends React.Component {
       //if success route to next page
       //else display text
 
-      /* 
-      this.setState.username = document.getElementById('username').value;
-      this.setState.password = document.getElementById('password').value;
+      
+      let username = document.getElementById('username').value;
+      let password = document.getElementById('password').value;
+
       axios.post('http://localhost:3000/signup',  {
-        username: this.state.username,
-        password: this.state.password
+        username,
+        password
         })
         .then( res =>{
           console.log(res);
-          console.log(res.data);
+          console.log(res.data.auth)
+          if(res.data.auth === true){
+            //send to next page
+            this.props.history.push('/pacing-interface/AOO');
+          }
         })
         .catch(err =>{
           console.log(err);
-      }) */
+      }) 
     }
   
     render() {

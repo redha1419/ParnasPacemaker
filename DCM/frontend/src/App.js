@@ -19,7 +19,7 @@ class App extends React.Component {
     return (
       <BrowserRouter>
         <div className="root-container">
-
+          
         <Route path="/" exact component={Title} />
 
         <Route path="/home" component={Controller} />

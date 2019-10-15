@@ -17,9 +17,9 @@ class SignIn extends React.Component {
       //if success route to next page
       //else display text
       
-      /*
-      this.setState.username = document.getElementById('username').value;
-      this.setState.password = document.getElementById('password').value;
+      
+      let username = document.getElementById('username').value;
+      let password = document.getElementById('password').value;
       axios.post('http://localhost:3000/login',  {
         username: this.state.username,
         password: this.state.password
@@ -27,12 +27,16 @@ class SignIn extends React.Component {
         .then( res =>{
           console.log(res);
           console.log(res.data);
-          //this.props.history.push('/pacing-interface/AOO');
+          if(res.data.auth === true){
+            this.props.history.push('/pacing-interface/AOO');
+          } 
         })
         .catch(err =>{
           console.log(err);
-      }) */
-      this.props.history.push('/pacing-interface/AOO');
+      }) 
+
+
+      
   }
 
   render() {

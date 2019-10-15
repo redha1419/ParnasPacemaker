@@ -34,11 +34,11 @@ router.post('/signup', function(req, res) {
             knex('users')
             .insert({username, password})
             .then(()=>{
-                res.status(200).json({message: "succesfully signed up"})
+                res.status(200).json({message: "succesfully signed up", auth: true})
             })
             .catch(err=>{
                 console.log(err);
-                res.status(500).json(err);
+                res.status(500).json({err, auth: false});
             })
         }
         else{
