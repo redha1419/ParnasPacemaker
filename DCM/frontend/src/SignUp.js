@@ -25,12 +25,10 @@ class SignUp extends React.Component {
         password
         })
         .then( res =>{
-          console.log(res);
-          console.log(res.data.auth)
           if(res.data.auth === true){
-            //send to next page
+            this.context.authenticate();
             this.props.history.push('/pacing-interface/AOO');
-          }
+          } 
         })
         .catch(err =>{
           console.log(err);

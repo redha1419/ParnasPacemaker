@@ -10,7 +10,7 @@ router.post('/login', function(req, res) {
     .where({username, password})
     .then((user)=>{
         if(user){
-            res.status(200).json({message: "succesfully logged in up"})
+            res.status(200).json({message: "succesfully logged in", auth: true})
         }
         else{
             res.status(403).json({message: "user not found"})

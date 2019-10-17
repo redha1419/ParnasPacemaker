@@ -4,9 +4,10 @@ import AOO from './AOO';
 import VOO from './VOO';
 import AAI from './AAI';
 import VVI from './VVI';
+import {AuthContext} from './contexts/AuthContext';
 
 class PacingInterface extends React.Component {
-
+    static contextType = AuthContext;
     constructor(props) {
       super(props);
       this.state = {
@@ -64,7 +65,10 @@ class PacingInterface extends React.Component {
     }
   
     render() {
-  
+      console.log(this.context)
+      if(!this.context.auth){
+        this.props.history.push('/')
+      }
       return (
         <div className="root-container">
           <div className="box-controller">

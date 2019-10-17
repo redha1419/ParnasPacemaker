@@ -1,7 +1,9 @@
 import React from 'react';
 import axios from 'axios';
+import {AuthContext} from './contexts/AuthContext';
 
 class SignIn extends React.Component {
+  static contextType = AuthContext;
 
   constructor(props) {
     super(props);
@@ -25,9 +27,8 @@ class SignIn extends React.Component {
         password
         })
         .then( res =>{
-          console.log(res);
-          console.log(res.data);
           if(res.data.auth === true){
+            this.context.authenticate();
             this.props.history.push('/pacing-interface/AOO');
           } 
         })
@@ -40,7 +41,6 @@ class SignIn extends React.Component {
   }
 
   render() {
-
     return (
       <div className="box-container">
         <div className="inner-container">
