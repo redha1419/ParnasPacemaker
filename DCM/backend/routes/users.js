@@ -42,6 +42,7 @@ router.post('/signup', function(req, res) {
             })
         }
         else{
+            console.log("more than 10 users already signed up");
             res.status(500).json({message: "more than 10 users already signed up"});
         }
     });

@@ -1,8 +1,9 @@
 import React from 'react';
 import axios from 'axios';
+import {AuthContext} from './contexts/AuthContext';
 
 class SignUp extends React.Component {
-
+  static contextType = AuthContext;
     constructor(props) {
       super(props);
       this.state = {
