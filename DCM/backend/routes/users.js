@@ -8,12 +8,13 @@ router.post('/login', function(req, res) {
 
     knex('users')
     .where({username, password})
+    .first()
     .then((user)=>{
         if(user){
             res.status(200).json({message: "succesfully logged in", auth: true})
         }
         else{
-            res.status(403).json({message: "user not found"})
+            res.status(403).json({message: "user not found",auth: false})
         }
     })
     .catch(err=>{

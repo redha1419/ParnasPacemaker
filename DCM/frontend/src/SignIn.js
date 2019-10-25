@@ -9,9 +9,13 @@ class SignIn extends React.Component {
     super(props);
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      error: false
     };
+  }
 
+  componentDidMount(){
+    this.context.unAuthenticate();
   }
 
   submitLogin(e) {
@@ -27,13 +31,17 @@ class SignIn extends React.Component {
         password
         })
         .then( res =>{
+          console.log(res.data)
           if(res.data.auth === true){
             this.context.authenticate();
             this.props.history.push('/pacing-interface/AOO');
-          } 
+          } else{
+            this.context.unAuthenticate();
+          }
         })
         .catch(err =>{
           console.log(err);
+          this.setState({error: true})
       }) 
 
 
@@ -47,6 +55,7 @@ class SignIn extends React.Component {
           <div className="header">
             Login
           </div>
+          {this.state.error ? <div className="error-message">Incorrect username/password</div> : <div></div>}
           <div className="box">
 
             <div className="input-group">

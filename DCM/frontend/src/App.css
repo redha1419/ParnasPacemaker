@@ -205,3 +205,8 @@ body,
 .show {
     visibility: visible;
 }
+
+.error-message {
+    color: red;
+    text-align: center;
+}
