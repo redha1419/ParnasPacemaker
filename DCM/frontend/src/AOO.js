@@ -1,7 +1,9 @@
 import React from 'react';
+import axios from 'axios';
+import {AuthContext} from './contexts/AuthContext';
 
 class AOO extends React.Component {
-
+    static contextType = AuthContext;
     constructor(props) {
       super(props);
       this.state = {
@@ -10,21 +12,25 @@ class AOO extends React.Component {
         error_atrial_amp:"",
         error_atrial_pw:"",
         communication: false,
-        config: {
-          lower:"", 
-          upper:"", 
-          atrial_amp:"", 
-          atrial_pw:""
-        }
+        lower:"", 
+        upper:"", 
+        atrial_amp:"", 
+        atrial_pw:""
       };
     }
 
     componentDidMount(){
+      console.log(this.context)
       axios.post('http://localhost:3000/getConfig',  {
-        username
+        username: this.context.username
         })
         .then( res =>{
-          this.setState({config: res.data.config.AOO});
+          this.setState({
+            lower: res.data.config.AOO.lower,
+            upper: res.data.config.AOO.upper,
+            atrial_amp: res.data.config.AOO.atrial_amp,
+            atrial_pw: res.data.config.AOO.atrial_pw
+          });
         })
         .catch(err =>{
           console.log(err)
@@ -76,7 +82,7 @@ class AOO extends React.Component {
         //all errors clean
         //then do submit action
         axios.post('http://localhost:3000/pace',  {
-          username,
+          username: this.context.username,
           mode: 'AOO',
           config: {lower, upper, atrial_amp, atrial_pw}
           })
@@ -104,7 +110,8 @@ class AOO extends React.Component {
                 type="text"
                 name="lower"
                 id="lower"
-                value={this.state.config.lower}
+                value={this.state.lower}
+                onChange={(event)=>{this.setState({lower: event.target.value})}}
                 className="login-input"/>
             </div>
   
@@ -115,7 +122,8 @@ class AOO extends React.Component {
                 type="text"
                 name="upper"
                 id="upper"
-                value={this.state.config.upper}
+                value={this.state.upper}
+                onChange={(event)=>{this.setState({upper: event.target.value})}}
                 className="login-input"/>
             </div>
 
@@ -126,7 +134,8 @@ class AOO extends React.Component {
                 type="text"
                 name="atrial-amp"
                 id="atrial-amp"
-                value={this.state.config.atrial_amp}
+                value={this.state.atrial_amp}
+                onChange={(event)=>{this.setState({atrial_amp: event.target.value})}}
                 className="login-input"/>
             </div>
 
@@ -137,7 +146,8 @@ class AOO extends React.Component {
                 type="text"
                 name="atrial-pw"
                 id="atrial-pw"
-                value={this.state.config.atrial_pw}
+                value={this.state.atrial_pw}
+                onChange={(event)=>{this.setState({atrial_pw: event.target.value})}}
                 className="login-input"/>
             </div>
   

@@ -78,19 +78,20 @@ router.post('/signup', function(req, res) {
     });
 });
 
-router.get('/getConfig', function(req,res){
+router.post('/getConfig', function(req,res){
     let username = req.body.username;
+    console.log(req.body)
     //already authenticated if can click this button!
     knex('users')
-    .where({username})
+    .where('username', username)
     .first()
     .then(user=>{
         res.status(200).json({config: user.config});
     })
     .catch(err=>{
+        console.log(err)
         res.status(500).json({err});
-    })
-
-})
+    });
+});
 
 module.exports = router;

@@ -9,8 +9,30 @@ class VOO extends React.Component {
         error_upper:"",
         error_ventricular_amp:"",
         error_ventricular_pw:"",
-        communication: false
+        communication: false,
+        lower:"", 
+        upper:"", 
+        ventricular_amp:"", 
+        ventricular_pw:""
       };
+    }
+
+    componentDidMount(){
+      console.log(this.context)
+      axios.post('http://localhost:3000/getConfig',  {
+        username: this.context.username
+        })
+        .then( res =>{
+          this.setState({
+            lower: res.data.config.VOO.lower,
+            upper: res.data.config.VOO.upper,
+            atrial_amp: res.data.config.VOO.atrial_amp,
+            atrial_pw: res.data.config.VOO.atrial_pw
+          });
+        })
+        .catch(err =>{
+          console.log(err)
+      }) 
     }
 
     submit(e){
@@ -57,7 +79,17 @@ class VOO extends React.Component {
       if(!error){
         //all errors clean
         //then do submit action
-        this.setState({communication: true});
+        axios.post('http://localhost:3000/pace',  {
+          username: this.context.username,
+          mode: 'AOO',
+          config: {lower, upper, ventricular_amp, ventricular_pw}
+          })
+          .then( res =>{
+            this.setState({communication: true});
+          })
+          .catch(err =>{
+            this.setState({communication: false});
+        }) 
       }
       else{
         this.setState({communication: false});
@@ -76,6 +108,8 @@ class VOO extends React.Component {
                 type="text"
                 name="lower"
                 id="lower"
+                value={this.state.lower}
+                onChange={(event)=>{this.setState({lower: event.target.value})}}
                 className="login-input"/>
             </div>
   
@@ -86,6 +120,8 @@ class VOO extends React.Component {
                 type="text"
                 name="upper"
                 id="upper"
+                value={this.state.upper}
+                onChange={(event)=>{this.setState({upper: event.target.value})}}
                 className="login-input"/>
             </div>
 
@@ -96,6 +132,8 @@ class VOO extends React.Component {
                 type="text"
                 name="ventricular-amp"
                 id="ventricular-amp"
+                value={this.state.ventricular_amp}
+                onChange={(event)=>{this.setState({ventricular_amp: event.target.value})}}
                 className="login-input"/>
             </div>
 
@@ -106,6 +144,8 @@ class VOO extends React.Component {
                 type="text"
                 name="ventricular-pw"
                 id="ventricular-pw"
+                value={this.state.ventricular_pw}
+                onChange={(event)=>{this.setState({ventricular_pw: event.target.value})}}
                 className="login-input"/>
             </div>
   
