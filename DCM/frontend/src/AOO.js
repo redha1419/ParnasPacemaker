@@ -9,8 +9,26 @@ class AOO extends React.Component {
         error_upper:"",
         error_atrial_amp:"",
         error_atrial_pw:"",
-        communication: false
+        communication: false,
+        config: {
+          lower:"", 
+          upper:"", 
+          atrial_amp:"", 
+          atrial_pw:""
+        }
       };
+    }
+
+    componentDidMount(){
+      axios.post('http://localhost:3000/getConfig',  {
+        username
+        })
+        .then( res =>{
+          this.setState({config: res.data.config.AOO});
+        })
+        .catch(err =>{
+          console.log(err)
+      }) 
     }
 
     submit(e){
@@ -57,22 +75,17 @@ class AOO extends React.Component {
       if(!error){
         //all errors clean
         //then do submit action
-        axios.post('http://localhost:3000/pacing',  {
+        axios.post('http://localhost:3000/pace',  {
           username,
-          password
+          mode: 'AOO',
+          config: {lower, upper, atrial_amp, atrial_pw}
           })
           .then( res =>{
-            if(res.data.auth === true){
-              this.context.authenticate(username);
-              this.props.history.push('/pacing-interface/AOO');
-            } 
+            this.setState({communication: true});
           })
           .catch(err =>{
-            this.setState({error: true, error_message: err.message})
-            console.log(err);
+            this.setState({communication: false});
         }) 
-
-        this.setState({communication: true});
       }
       else{
         this.setState({communication: false});
@@ -91,6 +104,7 @@ class AOO extends React.Component {
                 type="text"
                 name="lower"
                 id="lower"
+                value={this.state.config.lower}
                 className="login-input"/>
             </div>
   
@@ -101,6 +115,7 @@ class AOO extends React.Component {
                 type="text"
                 name="upper"
                 id="upper"
+                value={this.state.config.upper}
                 className="login-input"/>
             </div>
 
@@ -111,6 +126,7 @@ class AOO extends React.Component {
                 type="text"
                 name="atrial-amp"
                 id="atrial-amp"
+                value={this.state.config.atrial_amp}
                 className="login-input"/>
             </div>
 
@@ -121,6 +137,7 @@ class AOO extends React.Component {
                 type="text"
                 name="atrial-pw"
                 id="atrial-pw"
+                value={this.state.config.atrial_pw}
                 className="login-input"/>
             </div>
   
