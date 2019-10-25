@@ -1,7 +1,9 @@
 import React from 'react';
+import axios from 'axios';
+import {AuthContext} from './contexts/AuthContext';
 
 class VOO extends React.Component {
-
+    static contextType = AuthContext;
     constructor(props) {
       super(props);
       this.state = {
@@ -26,8 +28,8 @@ class VOO extends React.Component {
           this.setState({
             lower: res.data.config.VOO.lower,
             upper: res.data.config.VOO.upper,
-            atrial_amp: res.data.config.VOO.atrial_amp,
-            atrial_pw: res.data.config.VOO.atrial_pw
+            ventricular_amp: res.data.config.VOO.ventricular_amp,
+            ventricular_pw: res.data.config.VOO.ventricular_pw
           });
         })
         .catch(err =>{
@@ -81,7 +83,7 @@ class VOO extends React.Component {
         //then do submit action
         axios.post('http://localhost:3000/pace',  {
           username: this.context.username,
-          mode: 'AOO',
+          mode: 'VOO',
           config: {lower, upper, ventricular_amp, ventricular_pw}
           })
           .then( res =>{

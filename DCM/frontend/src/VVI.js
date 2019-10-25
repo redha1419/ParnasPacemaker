@@ -1,7 +1,9 @@
 import React from 'react';
+import axios from 'axios';
+import {AuthContext} from './contexts/AuthContext';
 
 class VVI extends React.Component {
-
+    static contextType = AuthContext;
     constructor(props) {
       super(props);
       this.state = {
@@ -10,8 +12,32 @@ class VVI extends React.Component {
         error_ventricular_amp:"",
         error_ventricular_pw:"",
         error_vrp:"",
-        communication: false
+        communication: false,
+        lower:"", 
+        upper:"", 
+        ventricular_amp:"", 
+        ventricular_pw:"",
+        vrp:""
       };
+    }
+
+    componentDidMount(){
+      console.log(this.context)
+      axios.post('http://localhost:3000/getConfig',  {
+        username: this.context.username
+        })
+        .then( res =>{
+          this.setState({
+            lower: res.data.config.VVI.lower,
+            upper: res.data.config.VVI.upper,
+            ventricular_amp: res.data.config.VVI.ventricular_amp,
+            ventricular_pw: res.data.config.VVI.ventricular_pw,
+            vrp: res.data.config.VVI.vrp
+          });
+        })
+        .catch(err =>{
+          console.log(err)
+      }) 
     }
 
     submit(e){
@@ -69,7 +95,17 @@ class VVI extends React.Component {
       if(!error){
         //all errors clean
         //then do submit action
-        this.setState({communication: true});
+        axios.post('http://localhost:3000/pace',  {
+          username: this.context.username,
+          mode: 'VVI',
+          config: {lower, upper, ventricular_amp, ventricular_pw, vrp}
+          })
+          .then( res =>{
+            this.setState({communication: true});
+          })
+          .catch(err =>{
+            this.setState({communication: false});
+        }) 
       }
       else{
         this.setState({communication: false});
@@ -88,6 +124,8 @@ class VVI extends React.Component {
                 type="text"
                 name="lower"
                 id="lower"
+                value={this.state.lower}
+                onChange={(event)=>{this.setState({lower: event.target.value})}}
                 className="login-input"/>
             </div>
   
@@ -98,6 +136,8 @@ class VVI extends React.Component {
                 type="text"
                 name="upper"
                 id="upper"
+                value={this.state.upper}
+                onChange={(event)=>{this.setState({upper: event.target.value})}}
                 className="login-input"/>
             </div>
 
@@ -108,6 +148,8 @@ class VVI extends React.Component {
                 type="text"
                 name="ventricular-amp"
                 id="ventricular-amp"
+                value={this.state.ventricular_amp}
+                onChange={(event)=>{this.setState({ventricular_amp: event.target.value})}}
                 className="login-input"/>
             </div>
 
@@ -118,6 +160,8 @@ class VVI extends React.Component {
                 type="text"
                 name="ventricular-pw"
                 id="ventricular-pw"
+                value={this.state.ventricular_pw}
+                onChange={(event)=>{this.setState({ventricular_pw: event.target.value})}}
                 className="login-input"/>
             </div>
 
@@ -128,6 +172,8 @@ class VVI extends React.Component {
                 type="text"
                 name="vrp"
                 id="vrp"
+                value={this.state.vrp}
+                onChange={(event)=>{this.setState({vrp: event.target.value})}}
                 className="login-input"/>
             </div>
   

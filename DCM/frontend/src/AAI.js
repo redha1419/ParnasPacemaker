@@ -1,7 +1,9 @@
 import React from 'react';
+import axios from 'axios';
+import {AuthContext} from './contexts/AuthContext';
 
 class AAI extends React.Component {
-
+    static contextType = AuthContext;
     constructor(props) {
       super(props);
       this.state = {
@@ -10,8 +12,32 @@ class AAI extends React.Component {
         error_atrial_amp:"",
         error_atrial_pw:"",
         error_arp: "",
-        communication: false
+        communication: false,
+        lower:"", 
+        upper:"", 
+        atrial_amp:"", 
+        atrial_pw:"",
+        arp:""
       };
+    }
+
+    componentDidMount(){
+      console.log(this.context)
+      axios.post('http://localhost:3000/getConfig',  {
+        username: this.context.username
+        })
+        .then( res =>{
+          this.setState({
+            lower: res.data.config.AAI.lower,
+            upper: res.data.config.AAI.upper,
+            atrial_amp: res.data.config.AAI.atrial_amp,
+            atrial_pw: res.data.config.AAI.atrial_pw,
+            arp: res.data.config.AAI.arp,
+          });
+        })
+        .catch(err =>{
+          console.log(err)
+      }) 
     }
 
     submit(e){
@@ -56,7 +82,7 @@ class AAI extends React.Component {
         this.setState({error_atrial_pw: ""});
       }
 
-      if(arp > 2 || arp < 0 || arp === ""){
+      if(arp < 150 || arp > 500 || arp === ""){
         this.setState({error_arp: "Make sure: value is between 150ms and 500ms"});
         error = true;
       }
@@ -67,7 +93,17 @@ class AAI extends React.Component {
       if(!error){
         //all errors clean
         //then do submit action
-        this.setState({communication: true});
+        axios.post('http://localhost:3000/pace',  {
+          username: this.context.username,
+          mode: 'AAI',
+          config: {lower, upper, atrial_amp, atrial_pw, arp}
+          })
+          .then( res =>{
+            this.setState({communication: true});
+          })
+          .catch(err =>{
+            this.setState({communication: false});
+        }) 
       }
       else{
         this.setState({communication: false});
@@ -86,6 +122,8 @@ class AAI extends React.Component {
                 type="text"
                 name="lower"
                 id="lower"
+                value={this.state.lower}
+                onChange={(event)=>{this.setState({lower: event.target.value})}}
                 className="login-input"/>
             </div>
   
@@ -96,6 +134,8 @@ class AAI extends React.Component {
                 type="text"
                 name="upper"
                 id="upper"
+                value={this.state.upper}
+                onChange={(event)=>{this.setState({upper: event.target.value})}}
                 className="login-input"/>
             </div>
 
@@ -106,6 +146,8 @@ class AAI extends React.Component {
                 type="text"
                 name="atrial-amp"
                 id="atrial-amp"
+                value={this.state.atrial_amp}
+                onChange={(event)=>{this.setState({atrial_amp: event.target.value})}}
                 className="login-input"/>
             </div>
 
@@ -116,6 +158,8 @@ class AAI extends React.Component {
                 type="text"
                 name="atrial-pw"
                 id="atrial-pw"
+                value={this.state.atrial_pw || ''}
+                onChange={(event)=>{this.setState({atrial_pw: event.target.value})}}
                 className="login-input"/>
             </div>
 
@@ -126,6 +170,8 @@ class AAI extends React.Component {
                 type="text"
                 name="arp"
                 id="arp"
+                value={this.state.arp}
+                onChange={(event)=>{this.setState({arp: event.target.value})}}
                 className="login-input"/>
             </div>
   
