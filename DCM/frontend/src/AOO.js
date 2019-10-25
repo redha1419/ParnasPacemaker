@@ -20,12 +20,11 @@ class AOO extends React.Component {
       let atrial_amp = document.getElementById('atrial-amp').value;
       let atrial_pw = document.getElementById('atrial-pw').value;
 
-      console.log(lower)
-      console.log(upper)
-      console.log(upper > lower)
+      let error = false
 
       if(lower < 30 || upper < lower || lower === ""){
         this.setState({error_lower: "Make sure: value is less than upper limit and greater than 30"});
+        error = true;
       }
       else{
         this.setState({error_lower: ""});
@@ -33,6 +32,7 @@ class AOO extends React.Component {
 
       if(upper > 225 || upper < lower || upper === ""){
         this.setState({error_upper: "Make sure: value is greater than upper limit and less than 225"});
+        error = true;
       }
       else{
         this.setState({error_upper: ""});
@@ -40,6 +40,7 @@ class AOO extends React.Component {
 
       if(atrial_amp > 7 || atrial_amp < 0 || atrial_amp === ""){
         this.setState({error_atrial_amp: "Make sure: value is between 0V and 7V"});
+        error = true;
       }
       else{
         this.setState({error_atrial_amp: ""});
@@ -47,15 +48,19 @@ class AOO extends React.Component {
 
       if(atrial_pw > 2 || atrial_pw < 0 || atrial_pw === ""){
         this.setState({error_atrial_pw: "Make sure: value is between 0V and 2ms"});
+        error = true;
       }
       else{
         this.setState({error_atrial_pw: ""});
       }
 
-      if(this.state.error_atrial_pw === "" && this.state.error_atrial_amp === ""  && this.state.error_upper === "" && this.state.error_lower === ""){
+      if(!error){
         //all errors clean
         //then do submit action
         this.setState({communication: true});
+      }
+      else{
+        this.setState({communication: false});
       }
     }
     
@@ -63,7 +68,7 @@ class AOO extends React.Component {
       return (
 
           <div className="box">
-  
+            {this.state.communication ? <div className="success-message">Succesfully sent configuaration</div> : <div></div>}
             <div className="input-group2">
               <label>Lower Rate Limit</label>
               {this.state.error_lower === "" ? <div></div> : <div className="error-message">{this.state.error_lower}</div>}

@@ -20,13 +20,11 @@ class VOO extends React.Component {
       let ventricular_amp = document.getElementById('ventricular-amp').value;
       let ventricular_pw = document.getElementById('ventricular-pw').value;
 
-      console.log(lower)
-      console.log(upper)
-      console.log(ventricular_amp)
-      console.log(ventricular_pw)
+      let error = false;
 
       if(lower < 30 || upper < lower || lower === ""){
         this.setState({error_lower: "Make sure: value is less than upper limit and greater than 30"});
+        error = true;
       }
       else{
         this.setState({error_lower: ""});
@@ -34,6 +32,7 @@ class VOO extends React.Component {
 
       if(upper > 225 || upper < lower || upper === ""){
         this.setState({error_upper: "Make sure: value is greater than upper limit and less than 225"});
+        error = true;
       }
       else{
         this.setState({error_upper: ""});
@@ -41,6 +40,7 @@ class VOO extends React.Component {
 
       if(ventricular_amp > 7 || ventricular_amp < 0 || ventricular_amp === ""){
         this.setState({error_ventricular_amp: "Make sure: value is between 0V and 7V"});
+        error = true;
       }
       else{
         this.setState({error_ventricular_amp: ""});
@@ -48,15 +48,19 @@ class VOO extends React.Component {
 
       if(ventricular_pw > 2 || ventricular_pw < 0 ||  ventricular_amp === ""){
         this.setState({error_ventricular_pw: "Make sure: value is between 0V and 2ms"});
+        error = true;
       }
       else{
         this.setState({error_ventricular_pw: ""});
       }
 
-      if(this.state.error_ventricular_pw === "" && this.state.error_ventricular_amp === ""  && this.state.error_upper === "" && this.state.error_lower === ""){
+      if(!error){
         //all errors clean
         //then do submit action
         this.setState({communication: true});
+      }
+      else{
+        this.setState({communication: false});
       }
 
     }
@@ -64,7 +68,7 @@ class VOO extends React.Component {
     render() {
       return (
           <div className="box">
-  
+            {this.state.communication ? <div className="success-message">Succesfully sent configuaration</div> : <div></div>}
             <div className="input-group2">
               <label>Lower Rate Limit</label>
               {this.state.error_lower === "" ?  <div></div> : <div className="error-message">{this.state.error_lower}</div> }
