@@ -8,7 +8,8 @@ class SignUp extends React.Component {
       super(props);
       this.state = {
         username: '',
-        password: ''
+        password: '',
+        error: false
       };
     }
   
@@ -32,6 +33,7 @@ class SignUp extends React.Component {
           } 
         })
         .catch(err =>{
+          this.setState({error: true, error_message: err.message})
           console.log(err);
       }) 
     }
@@ -43,6 +45,7 @@ class SignUp extends React.Component {
             <div className="header">
               Register
             </div>
+            {this.state.error ? <div className="error-message">{this.state.error_message}</div> : <div></div>}
             <div className="box">
     
               <div className="input-group">
