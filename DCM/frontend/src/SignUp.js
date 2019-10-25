@@ -28,7 +28,7 @@ class SignUp extends React.Component {
         })
         .then( res =>{
           if(res.data.auth === true){
-            this.context.authenticate();
+            this.context.authenticate(username);
             this.props.history.push('/pacing-interface/AOO');
           } 
         })

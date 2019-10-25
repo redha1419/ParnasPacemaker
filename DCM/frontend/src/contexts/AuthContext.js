@@ -4,13 +4,14 @@ export const AuthContext = createContext();
 
 class AuthContextProvier extends Component {
     state = {
-        auth: false
+        auth: false,
+        username: ""
     }
-    authenticate = () => {
-        this.setState({auth : true});
+    authenticate = (username) => {
+        this.setState({auth : true, username: username});
     }
     unAuthenticate = () => {
-        this.setState({auth : false});
+        this.setState({auth : false, username: ""});
     }
     render(){
         return (

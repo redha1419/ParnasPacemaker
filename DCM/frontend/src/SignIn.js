@@ -33,7 +33,7 @@ class SignIn extends React.Component {
         .then( res =>{
           console.log(res.data)
           if(res.data.auth === true){
-            this.context.authenticate();
+            this.context.authenticate(username);
             this.props.history.push('/pacing-interface/AOO');
           } else{
             this.context.unAuthenticate();

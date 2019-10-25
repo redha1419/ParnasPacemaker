@@ -57,6 +57,21 @@ class AOO extends React.Component {
       if(!error){
         //all errors clean
         //then do submit action
+        axios.post('http://localhost:3000/pacing',  {
+          username,
+          password
+          })
+          .then( res =>{
+            if(res.data.auth === true){
+              this.context.authenticate(username);
+              this.props.history.push('/pacing-interface/AOO');
+            } 
+          })
+          .catch(err =>{
+            this.setState({error: true, error_message: err.message})
+            console.log(err);
+        }) 
+
         this.setState({communication: true});
       }
       else{
