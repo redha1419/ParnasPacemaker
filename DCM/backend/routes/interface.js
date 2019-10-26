@@ -4,7 +4,7 @@ const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
 const knex = require('../db/knex')
 
-
+/*
 router.get('/pacing_mode', function(req, res){
 
     const port = new SerialPort(path, { baudRate: 256000 });
@@ -14,6 +14,7 @@ router.get('/pacing_mode', function(req, res){
     port.write('ROBOT POWER ON\n');
 
 });
+*/
 
 router.post('/pace', function(req, res){
     let mode = req.body.mode;

@@ -39,14 +39,14 @@ class VOO extends React.Component {
 
     submit(e){
       //first check all values
-      let lower = document.getElementById('lower').value;
-      let upper = document.getElementById('upper').value;
-      let ventricular_amp = document.getElementById('ventricular-amp').value;
-      let ventricular_pw = document.getElementById('ventricular-pw').value;
-
+      let lower = Number(document.getElementById('lower').value);
+      let upper = Number(document.getElementById('upper').value);
+      let ventricular_amp = Number(document.getElementById('ventricular-amp').value);
+      let ventricular_pw = Number(document.getElementById('ventricular-pw').value);
+      
       let error = false;
 
-      if(lower < 30 || upper < lower || lower === "" || typeof lower != 'number'){
+      if(lower < 30 || upper < lower || !lower){
         this.setState({error_lower: "Make sure: value is less than upper limit and greater than 30"});
         error = true;
       }
@@ -54,7 +54,7 @@ class VOO extends React.Component {
         this.setState({error_lower: ""});
       }
 
-      if(upper > 225 || upper < lower || upper === "" || typeof upper != 'number'){
+      if(upper > 225 || upper < lower || !upper){
         this.setState({error_upper: "Make sure: value is greater than upper limit and less than 225"});
         error = true;
       }
@@ -62,7 +62,7 @@ class VOO extends React.Component {
         this.setState({error_upper: ""});
       }
 
-      if(ventricular_amp > 7 || ventricular_amp < 0 || ventricular_amp === "" || typeof ventricular_amp != 'number'){
+      if(ventricular_amp > 7 || ventricular_amp < 0 || !ventricular_amp ){
         this.setState({error_ventricular_amp: "Make sure: value is between 0V and 7V"});
         error = true;
       }
@@ -70,7 +70,7 @@ class VOO extends React.Component {
         this.setState({error_ventricular_amp: ""});
       }
 
-      if(ventricular_pw > 2 || ventricular_pw < 0 ||  ventricular_amp === "" || typeof ventricular_amp != 'number'){
+      if(ventricular_pw > 2 || ventricular_pw < 0 ||  !ventricular_amp){
         this.setState({error_ventricular_pw: "Make sure: value is between 0V and 2ms"});
         error = true;
       }
@@ -110,7 +110,7 @@ class VOO extends React.Component {
                 type="text"
                 name="lower"
                 id="lower"
-                value={this.state.lower}
+                value={this.state.lower || ''}
                 onChange={(event)=>{this.setState({lower: event.target.value})}}
                 className="login-input"/>
             </div>
@@ -122,7 +122,7 @@ class VOO extends React.Component {
                 type="text"
                 name="upper"
                 id="upper"
-                value={this.state.upper}
+                value={this.state.upper || ''}
                 onChange={(event)=>{this.setState({upper: event.target.value})}}
                 className="login-input"/>
             </div>
@@ -134,7 +134,7 @@ class VOO extends React.Component {
                 type="text"
                 name="ventricular-amp"
                 id="ventricular-amp"
-                value={this.state.ventricular_amp}
+                value={this.state.ventricular_amp || ''}
                 onChange={(event)=>{this.setState({ventricular_amp: event.target.value})}}
                 className="login-input"/>
             </div>
@@ -146,7 +146,7 @@ class VOO extends React.Component {
                 type="text"
                 name="ventricular-pw"
                 id="ventricular-pw"
-                value={this.state.ventricular_pw}
+                value={this.state.ventricular_pw || ''}
                 onChange={(event)=>{this.setState({ventricular_pw: event.target.value})}}
                 className="login-input"/>
             </div>
