@@ -28,7 +28,7 @@ router.post('/signup', function(req, res) {
     let username = req.body.username;
     let password = req.body.password;
     let config = {
-        pacemaker_id: '123',
+        pacemaker_id: Math.floor((Math.random() * 100000000) + 1),
         VOO: {
             upper:"",
             lower:"",
@@ -67,13 +67,18 @@ router.post('/signup', function(req, res) {
                 res.status(200).json({message: "succesfully signed up", auth: true})
             })
             .catch(err=>{
-                console.log(err);
-                res.status(500).json({err, auth: false});
+                if(err.code === '23505'){
+                    res.status(200).json({message:"Username already taken", auth: false});
+                }else{
+                    console.log(err);
+                    res.status(500).json({err, auth: false});
+                }
+
             })
         }
         else{
             console.log("more than 10 users already signed up");
-            res.status(500).json({message: "more than 10 users already signed up"});
+            res.status(200).json({message: "more than 10 users already signed up", auth: false});
         }
     });
 });

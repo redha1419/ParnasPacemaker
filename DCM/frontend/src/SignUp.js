@@ -30,11 +30,12 @@ class SignUp extends React.Component {
           if(res.data.auth === true){
             this.context.authenticate(username);
             this.props.history.push('/pacing-interface/AOO');
-          } 
+          }else{
+            this.setState({error: true, error_message: res.data.message})
+          }
         })
         .catch(err =>{
           this.setState({error: true, error_message: err.message})
-          console.log(err);
       }) 
     }
   

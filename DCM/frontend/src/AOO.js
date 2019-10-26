@@ -146,7 +146,7 @@ class AOO extends React.Component {
                 type="text"
                 name="atrial-pw"
                 id="atrial-pw"
-                value={this.state.atrial_pw}
+                value={this.state.atrial_pw || ""}
                 onChange={(event)=>{this.setState({atrial_pw: event.target.value})}}
                 className="login-input"/>
             </div>

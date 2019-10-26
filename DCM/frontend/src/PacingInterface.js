@@ -5,6 +5,7 @@ import VOO from './VOO';
 import AAI from './AAI';
 import VVI from './VVI';
 import {AuthContext} from './contexts/AuthContext';
+import axios from 'axios';
 
 class PacingInterface extends React.Component {
     static contextType = AuthContext;
@@ -14,9 +15,26 @@ class PacingInterface extends React.Component {
         isAOO: true,
         isVOO: false,
         isAAI: false,
-        isVVI: false
+        isVVI: false,
+        previous_maker:"",
+        current_maker:""
 
       };
+    }
+
+    componentDidMount(){
+      axios.post('http://localhost:3000/getConfig',  {
+        username: this.context.username
+        })
+        .then( res =>{
+          this.setState({
+            previous_maker: res.data.config.pacemaker_id
+          });
+        })
+        .catch(err =>{
+          console.log(err)
+      }) 
+      this.setState({current_maker: "456"})
     }
   
     showAOOBox() {
@@ -71,6 +89,9 @@ class PacingInterface extends React.Component {
       }
       return (
         <div className="root-container">
+        <div style={{paddingBottom: "50px",fontSize: "20px", color:"green"}}>
+        Current pacemaker is {this.state.current_maker} and the previous one is {this.state.previous_maker}
+        </div>
           <div className="box-controller">
             <div
               className={"controller " + (this.state.isAOO
