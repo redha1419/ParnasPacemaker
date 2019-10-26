@@ -46,7 +46,7 @@ class VOO extends React.Component {
 
       let error = false;
 
-      if(lower < 30 || upper < lower || lower === ""){
+      if(lower < 30 || upper < lower || lower === "" || typeof lower != 'number'){
         this.setState({error_lower: "Make sure: value is less than upper limit and greater than 30"});
         error = true;
       }
@@ -54,7 +54,7 @@ class VOO extends React.Component {
         this.setState({error_lower: ""});
       }
 
-      if(upper > 225 || upper < lower || upper === ""){
+      if(upper > 225 || upper < lower || upper === "" || typeof upper != 'number'){
         this.setState({error_upper: "Make sure: value is greater than upper limit and less than 225"});
         error = true;
       }
@@ -62,7 +62,7 @@ class VOO extends React.Component {
         this.setState({error_upper: ""});
       }
 
-      if(ventricular_amp > 7 || ventricular_amp < 0 || ventricular_amp === ""){
+      if(ventricular_amp > 7 || ventricular_amp < 0 || ventricular_amp === "" || typeof ventricular_amp != 'number'){
         this.setState({error_ventricular_amp: "Make sure: value is between 0V and 7V"});
         error = true;
       }
@@ -70,7 +70,7 @@ class VOO extends React.Component {
         this.setState({error_ventricular_amp: ""});
       }
 
-      if(ventricular_pw > 2 || ventricular_pw < 0 ||  ventricular_amp === ""){
+      if(ventricular_pw > 2 || ventricular_pw < 0 ||  ventricular_amp === "" || typeof ventricular_amp != 'number'){
         this.setState({error_ventricular_pw: "Make sure: value is between 0V and 2ms"});
         error = true;
       }

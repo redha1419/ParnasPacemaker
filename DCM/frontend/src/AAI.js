@@ -50,7 +50,7 @@ class AAI extends React.Component {
 
       let error = false;
 
-      if(lower < 30 || upper < lower || lower === ""){
+      if(lower < 30 || upper < lower || lower === "" || typeof lower != 'number'){
         this.setState({error_lower: "Make sure: value is less than upper limit and greater than 30"});
         error = true;
       }
@@ -58,7 +58,7 @@ class AAI extends React.Component {
         this.setState({error_lower: ""});
       }
 
-      if(upper > 225 || upper < lower || upper === ""){
+      if(upper > 225 || upper < lower || upper === "" || typeof upper != 'number'){
         this.setState({error_upper: "Make sure: value is greater than upper limit and less than 225"});
         error = true;
       }
@@ -66,7 +66,7 @@ class AAI extends React.Component {
         this.setState({error_upper: ""});
       }
 
-      if(atrial_amp > 7 || atrial_amp < 0 || atrial_amp === ""){
+      if(atrial_amp > 7 || atrial_amp < 0 || atrial_amp === "" || typeof atrial_amp != 'number'){
         this.setState({error_atrial_amp: "Make sure: value is between 0V and 7V"});
         error = true;
       }
@@ -74,7 +74,7 @@ class AAI extends React.Component {
         this.setState({error_atrial_amp: ""});
       }
 
-      if(atrial_pw > 2 || atrial_pw < 0 || atrial_pw === ""){
+      if(atrial_pw > 2 || atrial_pw < 0 || atrial_pw === "" || typeof atrial_pw != 'number'){
         this.setState({error_atrial_pw: "Make sure: value is between 0V and 2ms"});
         error = true;
       }
@@ -82,7 +82,7 @@ class AAI extends React.Component {
         this.setState({error_atrial_pw: ""});
       }
 
-      if(arp < 150 || arp > 500 || arp === ""){
+      if(arp < 150 || arp > 500 || arp === "" || typeof arp != 'number'){
         this.setState({error_arp: "Make sure: value is between 150ms and 500ms"});
         error = true;
       }

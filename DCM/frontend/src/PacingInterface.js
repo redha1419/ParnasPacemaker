@@ -6,6 +6,7 @@ import AAI from './AAI';
 import VVI from './VVI';
 import {AuthContext} from './contexts/AuthContext';
 import axios from 'axios';
+import logo from './pacemaker_logo.png';
 
 class PacingInterface extends React.Component {
     static contextType = AuthContext;
@@ -89,6 +90,7 @@ class PacingInterface extends React.Component {
       }
       return (
         <div className="root-container">
+        <img style={{paddingBottom:"30px"}}src={logo} alt="logo" onClick={()=>{this.props.history.push('/home/login')}}/>
         <div style={{paddingBottom: "50px",fontSize: "20px", color:"green"}}>
         Current pacemaker is {this.state.current_maker} and the previous one is {this.state.previous_maker}
         </div>
