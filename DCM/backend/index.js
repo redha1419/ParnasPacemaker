@@ -13,14 +13,15 @@ app.use(bodyParser.json());
   next();
 }); 
 
-const users = require('./routes/users');
+//grab our routes in users and interface
+const users = require('./routes/users'); 
 const interface = require('./routes/interface');
 
-require('dotenv').config();
+require('dotenv').config(); //grab our environment variables
 
 
-app.use('/', users);
-app.use('/', interface);
+app.use('/', users); //set our routes to the "/" location
+app.use('/', interface); //set our routes to the "/" location
 
 app.listen(process.env.PORT, function() {
   console.info("==> 🌎 Peep port %s.", process.env.PORT);

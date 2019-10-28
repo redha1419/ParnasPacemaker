@@ -16,26 +16,30 @@ router.get('/pacing_mode', function(req, res){
 });
 */
 
+//setting the pace mode
 router.post('/pace', function(req, res){
+    //grab credentials from request
     let mode = req.body.mode;
     let username = req.body.username;
     let config = req.body.config;
-    knex('users')
+
+
+    knex('users') //query db and retrieve user
     .where({username})
     .first()
     .then((user)=>{
         //grab the json
         //update preference
-        user.config[mode] =  config;
+        user.config[mode] =  config; //update user config
         knex('users')
-        .update('config', user.config)
+        .update('config', user.config) //set our new config
         .where({username})
         .then(()=>{
             res.status(200).json({message: "succesfully saved configs for " + mode})
         })
     })
     .catch(err =>{
-        res.status(500).json({err, message: "failed to saved configs for " + mode})
+        res.status(500).json({err, message: "failed to saved configs for " + mode}) //give back error for any reason
     })
 });
 
