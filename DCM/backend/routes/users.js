@@ -2,14 +2,17 @@ const express = require('express');
 const router = new express.Router();
 const knex = require('../db/knex')
 
+//the login route
 router.post('/login', function(req, res) {
+    //grab credentials from request
     let username = req.body.username;
     let password = req.body.password;
 
+    //query db with username and password 
     knex('users')
     .where({username, password})
     .first()
-    .then((user)=>{
+    .then((user)=>{ //if we find user then success
         if(user){
             res.status(200).json({message: "succesfully logged in", auth: true})
         }
@@ -17,22 +20,27 @@ router.post('/login', function(req, res) {
             res.status(403).json({message: "user not found",auth: false})
         }
     })
-    .catch(err=>{
+    .catch(err=>{ //catch err
         console.log(err);
         res.status(500).json(err);
     })
     
 });
 
+//the sign up route
 router.post('/signup', function(req, res) {
+    //grab credentials from request
     let username = req.body.username;
     let password = req.body.password;
 
+    //make sure the credentials
     if(username.length < 1|| password.length < 1 ){
         res.status(200).json({message:"Please enter a username/passwrod", auth: false});
     }
+
+    //default configurations for new users
     let config = {
-        pacemaker_id: Math.floor((Math.random() * 100000000) + 1),
+        pacemaker_id: Math.floor((Math.random() * 100000000) + 1), //we grab a random id for now, in the future we will grab serially
         VOO: {
             upper:"",
             lower:"",
@@ -63,17 +71,17 @@ router.post('/signup', function(req, res) {
 
 
 
-    knex('users')
+    knex('users') //query db to makre sure only 10 users
     .select('*')
     .then(users=>{
-        if(users.length < 10){
+        if(users.length < 10){ //if less than 10 add a new user
             knex('users')
             .insert({username, password, config})
             .then(()=>{
                 res.status(200).json({message: "succesfully signed up", auth: true})
             })
             .catch(err=>{
-                if(err.code === '23505'){
+                if(err.code === '23505'){ //if we see this then the username is not unique
                     res.status(200).json({message:"Username already taken", auth: false});
                 }else{
                     console.log(err);
@@ -83,21 +91,23 @@ router.post('/signup', function(req, res) {
             })
         }
         else{
-            console.log("more than 10 users already signed up");
+            console.log("more than 10 users already signed up"); //give back error message when more than 10 users
             res.status(200).json({message: "more than 10 users already signed up", auth: false});
         }
     });
 });
 
+//retrieve user config given username
 router.post('/getConfig', function(req,res){
+    //grab credentials from request body
     let username = req.body.username;
-    console.log(req.body)
     //already authenticated if can click this button!
+
     knex('users')
-    .where('username', username)
+    .where('username', username) //retrive user object from database
     .first()
     .then(user=>{
-        res.status(200).json({config: user.config});
+        res.status(200).json({config: user.config}); //return their config
     })
     .catch(err=>{
         console.log(err)
