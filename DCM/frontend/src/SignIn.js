@@ -4,7 +4,7 @@ import {AuthContext} from './contexts/AuthContext';
 
 class SignIn extends React.Component {
   static contextType = AuthContext;
-
+  //constructor - initialize username, password, and error state
   constructor(props) {
     super(props);
     this.state = {
@@ -14,10 +14,12 @@ class SignIn extends React.Component {
     };
   }
 
+  //when sign-in screen is accessed, user is unauthenticated
   componentDidMount(){
     this.context.unAuthenticate();
   }
 
+  //upon clicking sign in, a request is sent to backend to see whether there is a match for credentials in database
   submitLogin(e) {
       //ask backend, give credentials
       //if success route to next page
@@ -32,7 +34,7 @@ class SignIn extends React.Component {
         })
         .then( res =>{
           console.log(res.data)
-          if(res.data.auth === true){
+          if(res.data.auth === true){     //if success, then authenticate user and proceed to pacing interface (AOO)
             this.context.authenticate(username);
             this.props.history.push('/pacing-interface/AOO');
           } else{
