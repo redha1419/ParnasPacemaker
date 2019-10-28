@@ -27,6 +27,10 @@ router.post('/login', function(req, res) {
 router.post('/signup', function(req, res) {
     let username = req.body.username;
     let password = req.body.password;
+
+    if(username.length < 1|| password.length < 1 ){
+        res.status(200).json({message:"Please enter a username/passwrod", auth: false});
+    }
     let config = {
         pacemaker_id: Math.floor((Math.random() * 100000000) + 1),
         VOO: {
@@ -56,6 +60,8 @@ router.post('/signup', function(req, res) {
             arp:""
         }
     }
+
+
 
     knex('users')
     .select('*')
