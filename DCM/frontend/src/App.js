@@ -15,6 +15,7 @@ class App extends React.Component {
     this.state = {};
   }
 
+  //intialize paths for each page
   render() {
 
     return (

@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import {Link} from 'react-router-dom';
 
+//This component is responsible for the tab buttons used for switching between the Sign-in and Sign-up pages
 class Controller extends React.Component {
 
   constructor(props) {
@@ -12,11 +13,13 @@ class Controller extends React.Component {
     };
   }
 
+  //if sign-in tab is active, show sign-in screen
   showLoginBox() {
     this.setState({isLoginOpen: true, isRegisterOpen: false});
 
   }
 
+  //if sign-up tab is active, show sign-up screen
   showRegisterBox() {
     this.setState({isRegisterOpen: true, isLoginOpen: false});
   }

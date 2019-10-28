@@ -10,6 +10,7 @@ import logo from './pacemaker_logo.png';
 
 class PacingInterface extends React.Component {
     static contextType = AuthContext;
+    //Upon entering the pacing interface, the default mode displayed is AOO
     constructor(props) {
       super(props);
       this.state = {
@@ -23,6 +24,7 @@ class PacingInterface extends React.Component {
       };
     }
 
+    //when pacing interface is first accessed, receive the ID of the pacemaker that was previously used by the current user
     componentDidMount(){
       axios.post('http://localhost:3000/getConfig',  {
         username: this.context.username
@@ -35,9 +37,10 @@ class PacingInterface extends React.Component {
         .catch(err =>{
           console.log(err)
       }) 
-      this.setState({current_maker: "456"})
+      this.setState({current_maker: "456"})     //placeholder value, actual ID will be serially transmitted in future
     }
   
+    //functionality for tab buttons, displays pacing mode according to respective tab that is active
     showAOOBox() {
       this.setState({
         isAOO: true,

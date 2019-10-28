@@ -4,6 +4,7 @@ import {AuthContext} from './contexts/AuthContext';
 
 class VOO extends React.Component {
     static contextType = AuthContext;
+    //constructor -  intialize parameters for pacing mode
     constructor(props) {
       super(props);
       this.state = {
@@ -19,12 +20,13 @@ class VOO extends React.Component {
       };
     }
 
+    //this function is called when VOO mode becomes active - sends a request to the backend to save programmable parameters for current user
     componentDidMount(){
       console.log(this.context)
       axios.post('http://localhost:3000/getConfig',  {
         username: this.context.username
         })
-        .then( res =>{
+        .then( res =>{  //successful request to backend - set parameters
           this.setState({
             lower: res.data.config.VOO.lower,
             upper: res.data.config.VOO.upper,
@@ -32,11 +34,12 @@ class VOO extends React.Component {
             ventricular_pw: res.data.config.VOO.ventricular_pw
           });
         })
-        .catch(err =>{
+        .catch(err =>{    //otherwise print error
           console.log(err)
       }) 
     }
 
+    //called when 'Start!' button is clicked
     submit(e){
       //first check all values
       let lower = Number(document.getElementById('lower').value);
@@ -46,6 +49,7 @@ class VOO extends React.Component {
       
       let error = false;
 
+      //check for invalid inputs
       if(lower < 30 || upper < lower || !lower){
         this.setState({error_lower: "Make sure: value is less than upper limit and greater than 30"});
         error = true;
@@ -78,6 +82,7 @@ class VOO extends React.Component {
         this.setState({error_ventricular_pw: ""});
       }
 
+      //if all inputs are valid, proceed by making sending parameters to backend to be serially communicated
       if(!error){
         //all errors clean
         //then do submit action

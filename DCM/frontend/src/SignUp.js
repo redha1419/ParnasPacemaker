@@ -13,6 +13,7 @@ class SignUp extends React.Component {
       };
     }
   
+    //upon clicking register button, credentials are sent to backend to be intialized in the database
     submitRegister(e) {
       //ask backend, give credentials
       //if success route to next page
@@ -26,7 +27,7 @@ class SignUp extends React.Component {
         username,
         password
         })
-        .then( res =>{
+        .then( res =>{      //if successful, authenticate user and redirect to pacing interface page
           if(res.data.auth === true){
             this.context.authenticate(username);
             this.props.history.push('/pacing-interface/AOO');
@@ -34,7 +35,7 @@ class SignUp extends React.Component {
             this.setState({error: true, error_message: res.data.message})
           }
         })
-        .catch(err =>{
+        .catch(err =>{    //unsuccessful if incorrect format or user limit has been reached
           this.setState({error: true, error_message: err.message})
       }) 
     }
