@@ -93,24 +93,24 @@ router.post('/pace', function(req, res){
 function getByteStream (payload){
     let sync = 0, fn = 0;     //22, 85
 
-    buf.writeUInt8(sync, 0);        //rxdata[0]
-    buf.writeUInt8(fn, 1);          //rxdata[1]
+    buf.writeFloatBE(sync);        //rxdata[0]
+    buf.writeFloatBE(fn);          //rxdata[1]
 
-    buf.writeUInt32BE(payload.config.upper, 2);    //upper limit - rxdata[3:4]
-    buf.writeUInt32BE(payload.config.lower, 6);    //low limit - rxdata[5:6]
+    buf.writeFloatBE(payload.config.upper);    //upper limit - rxdata[3:4]
+    buf.writeFloatBE(payload.config.lower);    //low limit - rxdata[5:6]
     
     if (payload.mode == "AOO"){
-        buf.writeUInt32BE(2, 10);   //mode
-        buf.writeUInt32BE(0, 14);   //arfp - rxdata[8:9]
-        buf.writeUInt32BE(0, 18);  //vrfp - rxdata[10:11]
-        buf.writeUInt32BE(payload.config.atrial_pw, 22);     //pulse width - rxdata[12:13]
-        buf.writeUInt32BE(0, 26);         //AV delay - rxdata[14:15]            250ms for dual pacing modes (DOO, DOOR)
-        buf.writeUInt32BE(payload.config.atrial_amp*1000, 30) ; //atrial amplitude - rxdata[16:19]   convert to mv by *1000
-        buf.writeUInt32BE(0, 34) ;        //ventricular amplitude - rxdata [20:23]
-        buf.writeUInt32BE(0, 38);       //MSR
-        buf.writeUInt32BE(0, 42);       //reaction time
-        buf.writeUInt32BE(0, 46);       //response time
-        buf.writeUInt32BE(0, 50);       //activity threshold
+        buf.writeFloatBE(2);   //mode
+        buf.writeFloatBE(0);   //arfp - rxdata[8:9]
+        buf.writeFloatBE(0);  //vrfp - rxdata[10:11]
+        buf.writeFloatBE(payload.config.atrial_pw);     //pulse width - rxdata[12:13]
+        buf.writeFloatBE(0);         //AV delay - rxdata[14:15]            250ms for dual pacing modes (DOO, DOOR)
+        buf.writeFloatBE(payload.config.atrial_amp*1000) ; //atrial amplitude - rxdata[16:19]   convert to mv by *1000
+        buf.writeFloatBE(0) ;        //ventricular amplitude - rxdata [20:23]
+        buf.writeFloatBE(0);       //MSR
+        buf.writeFloatBE(0);       //reaction time
+        buf.writeFloatBE(0);       //response time
+        buf.writeFloatBE(0);       //activity threshold
         }
     /*
     else if (payload.mode == "VOO"){
