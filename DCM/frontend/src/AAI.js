@@ -77,8 +77,8 @@ class AAI extends React.Component {
         this.setState({error_atrial_amp: ""});
       }
 
-      if(atrial_pw > 2 || atrial_pw < 0 || !atrial_pw){
-        this.setState({error_atrial_pw: "Make sure: value is between 0V and 2ms"});
+      if(atrial_pw > 5 || atrial_pw < 0 || !atrial_pw){   //5ms for testing purposes
+        this.setState({error_atrial_pw: "Make sure: value is between 0V and 5ms"});
         error = true;
       }
       else{
