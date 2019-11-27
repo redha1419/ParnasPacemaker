@@ -9,6 +9,3 @@ Next, to install backend dependecies: `cd DCM/backend; npm install`
 Finally, to start the backend run `node index`
 
 
-hi i am pav
-
-

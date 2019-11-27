@@ -17,7 +17,7 @@ router.post('/login', function(req, res) {
             res.status(200).json({message: "succesfully logged in", auth: true})
         }
         else{
-            res.status(403).json({message: "user not found",auth: false})
+            res.status(403).json({message: "user not found", auth: false})
         }
     })
     .catch(err=>{ //catch err
