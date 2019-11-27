@@ -66,6 +66,13 @@ router.post('/signup', function(req, res) {
             atrial_amp:"",
             atrail_pw:"",
             arp:""
+        },
+        DOO:{
+            upper:"",
+            lower:"",
+            atrial_amp:"",
+            atrail_pw:"",
+            arp:""
         }
     }
 
