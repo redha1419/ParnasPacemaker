@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {AuthContext} from './contexts/AuthContext';
+import Checkbox from '@material-ui/core/Checkbox';
 
 class AOO extends React.Component {
     static contextType = AuthContext;
@@ -16,7 +17,8 @@ class AOO extends React.Component {
         lower:"", 
         upper:"", 
         atrial_amp:"", 
-        atrial_pw:""
+        atrial_pw:"",
+        checked: false
       };
     }
 
@@ -103,11 +105,26 @@ class AOO extends React.Component {
       }
     }
     
+    handleChange(event){
+      this.setState({checked: !this.state.checked });
+    };
+    
     render() {
       return (
 
           <div className="box">
             {this.state.communication ? <div className="success-message">Succesfully sent configuaration</div> : <div></div>}
+            <div>
+            Rate Adaptive
+            <Checkbox
+              checked={this.state.checked}
+              onChange={this.handleChange.bind(this)}
+              value="checkedA"
+              inputProps={{
+                'aria-label': 'primary checkbox',
+              }}
+            />
+            </div>
             <div className="input-group2">
               <label>Lower Rate Limit</label>
               {this.state.error_lower === "" ? <div></div> : <div className="error-message">{this.state.error_lower}</div>}
@@ -155,6 +172,22 @@ class AOO extends React.Component {
                 onChange={(event)=>{this.setState({atrial_pw: event.target.value})}}
                 className="login-input"/>
             </div>
+
+            {
+              this.state.checked ?
+              <div className="input-group2">
+              <label>Atrial Pulse Width</label>
+              {this.state.error_atrial_pw === "" ? <div></div> : <div className="error-message">{this.state.error_atrial_pw}</div>}
+              <input
+                type="text"
+                name="atrial-pw"
+                id="atrial-pw"
+                value={this.state.atrial_pw || ""}
+                onChange={(event)=>{this.setState({atrial_pw: event.target.value})}}
+                className="login-input"/>
+            </div>
+              : null
+            }
   
             <button
               type="button"
