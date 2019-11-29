@@ -5,11 +5,6 @@ import VOO from './VOO';
 import AAI from './AAI';
 import VVI from './VVI';
 import DOO from './DOO'; 
-import AOOR from './AOOR'; 
-import VOOR from './VOOR'; 
-import AAIR from './AAIR'; 
-import VVIR from './VVIR'; 
-import DOOR from './DOOR'; 
 import {AuthContext} from './contexts/AuthContext';
 import axios from 'axios';
 import logo from './pacemaker_logo.png';
@@ -25,11 +20,6 @@ class PacingInterface extends React.Component {
         isAAI: false,
         isVVI: false,
         isDOO: false,
-        isAOOR: false, 
-        isVOOR: false,
-        isAAIR: false, 
-        isVVIR: false, 
-        isDOOR: false,
         previous_maker:"",
         current_maker:""
 
@@ -59,12 +49,7 @@ class PacingInterface extends React.Component {
         isVOO: false,
         isAAI: false,
         isVVI: false, 
-        isDOO: false, 
-        isAOOR: false, 
-        isVOOR: false,
-        isAAIR: false, 
-        isVVIR: false, 
-        isDOOR: false
+        isDOO: false
         }
       );
       this.props.history.push('/pacing-interface/AOO');
@@ -76,12 +61,7 @@ class PacingInterface extends React.Component {
           isVOO: true,
           isAAI: false,
           isVVI: false,
-          isDOO: false, 
-          isAOOR: false,
-          isVOOR: false,
-          isAAIR: false, 
-          isVVIR: false, 
-          isDOOR: false
+          isDOO: false
           }
         );
         this.props.history.push('/pacing-interface/VOO');
@@ -93,12 +73,7 @@ class PacingInterface extends React.Component {
           isVOO: false,
           isAAI: true,
           isVVI: false,
-          isDOO: false, 
-          isAOOR: false,
-          isVOOR: false,
-          isAAIR: false, 
-          isVVIR: false, 
-          isDOOR: false
+          isDOO: false
           }
         );
         this.props.history.push('/pacing-interface/AAI');
@@ -111,12 +86,7 @@ class PacingInterface extends React.Component {
           isVOO: false,
           isAAI: false,
           isVVI: true, 
-          isDOO: false, 
-          isAOOR: false,
-          isVOOR: false,
-          isAAIR: false, 
-          isVVIR: false, 
-          isDOOR: false
+          isDOO: false
           }
         );
         this.props.history.push('/pacing-interface/VVI');
@@ -128,101 +98,13 @@ class PacingInterface extends React.Component {
         isVOO: false,
         isAAI: false,
         isVVI: false, 
-        isDOO: true, 
-        isAOOR: false,
-        isVOOR: false,
-        isAAIR: false, 
-        isVVIR: false, 
-        isDOOR: false
+        isDOO: true
         }
       );
       this.props.history.push('/pacing-interface/DOO');
   }
 
-    showAOORBox() {
-    this.setState({
-      isAOO: false,
-      isVOO: false,
-      isAAI: false,
-      isVVI: false, 
-      isDOO: false, 
-      isAOOR: true,
-      isVOOR: false,
-      isAAIR: false, 
-      isVVIR: false, 
-      isDOOR: false
-      }
-    );
-    this.props.history.push('/pacing-interface/AOOR');
-  } 
-
-  showVOORBox() {
-    this.setState({
-      isAOO: false,
-      isVOO: false,
-      isAAI: false,
-      isVVI: false, 
-      isDOO: false, 
-      isAOOR: false,
-      isVOOR: true,
-      isAAIR: false, 
-      isVVIR: false, 
-      isDOOR: false
-      }
-    );
-    this.props.history.push('/pacing-interface/VOOR');
-  } 
-
-  showAAIRBox() {
-    this.setState({
-      isAOO: false,
-      isVOO: false,
-      isAAI: false,
-      isVVI: false, 
-      isDOO: false, 
-      isAOOR: false,
-      isVOOR: false,
-      isAAIR: true, 
-      isVVIR: false, 
-      isDOOR: false
-      }
-    );
-    this.props.history.push('/pacing-interface/AAIR');
-  } 
-
-  showVVIRBox() {
-    this.setState({
-      isAOO: false,
-      isVOO: false,
-      isAAI: false,
-      isVVI: false, 
-      isDOO: false, 
-      isAOOR: false,
-      isVOOR: false,
-      isAAIR: false, 
-      isVVIR: true, 
-      isDOOR: false,
-      }
-    );
-    this.props.history.push('/pacing-interface/VVIR');
-  } 
-
-  showDOORBox() {
-    this.setState({
-      isAOO: false,
-      isVOO: false,
-      isAAI: false,
-      isVVI: false, 
-      isDOO: false, 
-      isAOOR: false,
-      isVOOR: false,
-      isAAIR: false, 
-      isVVIR: false, 
-      isDOOR: true
-      }
-    );
-    this.props.history.push('/pacing-interface/DOOR');
-  } 
+   
   
     render() {
       console.log(this.context)
@@ -281,55 +163,6 @@ class PacingInterface extends React.Component {
               .bind(this)}>
               DOO
             </div>
-            <div
-              className={"controller " + (this.state.isAOOR
-              ? "selected-controller"
-              : "")}
-              onClick={this
-              .showAOORBox
-              .bind(this)}>
-              AOOR
-            </div>
-
-            <div
-              className={"controller " + (this.state.isVOOR
-              ? "selected-controller"
-              : "")}
-              onClick={this
-              .showVOORBox
-              .bind(this)}>
-              VOOR
-            </div>
-
-            <div
-              className={"controller " + (this.state.isAAIR
-              ? "selected-controller"
-              : "")}
-              onClick={this
-              .showAAIRBox
-              .bind(this)}>
-              AAIR
-            </div>
-
-            <div
-              className={"controller " + (this.state.isVVIR
-              ? "selected-controller"
-              : "")}
-              onClick={this
-              .showVVIRBox
-              .bind(this)}>
-              VVIR
-            </div>
-
-            <div
-              className={"controller " + (this.state.isDOOR
-              ? "selected-controller"
-              : "")}
-              onClick={this
-              .showDOORBox
-              .bind(this)}>
-              DOOR
-            </div>
           </div>
           
           <div className="interface-container">
@@ -338,11 +171,6 @@ class PacingInterface extends React.Component {
             <Route path="/pacing-interface/AAI" exact component={AAI} />
             <Route path="/pacing-interface/VVI" exact component={VVI} />
             <Route path="/pacing-interface/DOO" exact component={DOO} />
-            <Route path="/pacing-interface/AOOR" exact component={AOOR}/>
-            <Route path="/pacing-interface/VOOR" exact component={VOOR}/>
-            <Route path="/pacing-interface/AAIR" exact component={AAIR}/>
-            <Route path="/pacing-interface/VVIR" exact component={VVIR}/>
-            <Route path="/pacing-interface/DOOR" exact component={DOOR}/>
           </div>
         </div>
   
