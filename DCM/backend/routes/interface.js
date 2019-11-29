@@ -9,7 +9,7 @@ const ByteLength = require('@serialport/parser-byte-length')
 const path = '/dev/tty.usbmodem0000001234561';        //path for K64F board
 const port = new SerialPort(path, { baudRate: 115200, autoOpen: true});
 
-var buf = Buffer.alloc(54);
+var buf = Buffer.alloc(28);
 var verify = Buffer.alloc(2);
 const parser = new Readline();
 
@@ -33,13 +33,19 @@ router.post('/pace', function(req, res){
         .update('config', user.config) //set our new config
         .where({username})
         .then(()=>{
-            console.log("HERE 1")
             payload = req.body
             console.log(payload.mode)
             getByteStream(payload);
-            //set bytes
-
             console.log(buf)
+            //set bytes
+            /*
+            let temp = JSON.parse(JSON.stringify(buf)).data;
+            let str = "";
+            for(let i=0;i<temp.length; i++){
+                str = str + temp[i].toString(16) + ", "
+            }
+            console.log(str)
+            */
             
             /*port.open(function (err) {
                 if (err) {
@@ -57,10 +63,10 @@ router.post('/pace', function(req, res){
                 }
               
                 // Because there's no callback to write, write errors will be emitted on the port:
-                console.log(buf);
+                //console.log(buf);
               })
 
-              //console.log(buf);
+              console.log(buf);
 
               
               //verify = Buffer.from([0, 34]);
@@ -92,7 +98,7 @@ router.post('/pace', function(req, res){
 });           
 
 function getByteStream (payload){
-    let sync = 0, fn = 1;     //22, 85
+    let sync = 22, fn =85;     //22, 85
 
     buf.writeInt8(sync, 0);        //rxdata[0]
     buf.writeInt8(fn, 1);          //rxdata[1]
@@ -100,73 +106,73 @@ function getByteStream (payload){
     /*buf.writeFloatBE(payload.config.upper);    //upper limit - rxdata[3:4]
     buf.writeFloatBE(payload.config.lower);*/
 
-    buf.writeFloatBE(payload.config.upper, 2);    //upper limit - rxdata[3:4]
-    buf.writeFloatBE(payload.config.lower, 6);    //low limit - rxdata[5:6]
-    
+    buf.writeUInt16LE(payload.config.upper, 2);    //upper limit - rxdata[3:4]
+    buf.writeUInt16LE(payload.config.lower, 4);    //low limit - rxdata[5:6]
+
     if (payload.mode == "AOO"){
-        buf.writeFloatBE(2, 10);   //mode
-        buf.writeFloatBE(0, 14);   //arfp - rxdata[8:9]
-        buf.writeFloatBE(0, 18);  //vrfp - rxdata[10:11]
-        buf.writeFloatBE(payload.config.atrial_pw, 22);     //pulse width - rxdata[12:13]
-        buf.writeFloatBE(0, 26);         //AV delay - rxdata[14:15]            250ms for dual pacing modes (DOO, DOOR)
-        buf.writeFloatBE(payload.config.atrial_amp*1000, 30) ; //atrial amplitude - rxdata[16:19]   convert to mv by *1000
-        buf.writeFloatBE(0, 34) ;        //ventricular amplitude - rxdata [20:23]
-        buf.writeFloatBE(0, 38);       //MSR
-        buf.writeFloatBE(0, 42);       //reaction time
-        buf.writeFloatBE(0, 46);       //response time
-        buf.writeFloatBE(0, 50);       //activity threshold
-        }
+        buf.writeUInt16LE(2, 6);   //mode
+        buf.writeUInt16LE(0, 8);   //arfp - rxdata[8:9]
+        buf.writeUInt16LE(0, 10);  //vrfp - rxdata[10:11]
+        buf.writeUInt16LE(payload.config.atrial_pw, 12);     //pulse width - rxdata[12:13]
+        buf.writeUInt16LE(0, 14);         //AV delay - rxdata[14:15]            250ms for dual pacing modes (DOO, DOOR)
+        buf.writeUInt16LE(payload.config.atrial_amp*1000, 16) ; //atrial amplitude - rxdata[16:19]   convert to mv by *1000
+        buf.writeUInt16LE(0, 18) ;        //ventricular amplitude - rxdata [20:23]
+        buf.writeUInt16LE(0, 20);       //MSR
+        buf.writeUInt16LE(0, 22);       //reaction time
+        buf.writeUInt16LE(0, 24);       //response time
+        buf.writeUInt16LE(0, 26);       //activity threshold
+    }
     else if (payload.mode == "VOO"){
-        buf.writeFloatBE(1, 10);   //mode
-        buf.writeFloatBE(0, 14);   //arfp - rxdata[8:9]
-        buf.writeFloatBE(0, 18);  //vrfp - rxdata[10:11]
-        buf.writeFloatBE(payload.config.ventricular_pw, 22);     //pulse width - rxdata[12:13]
-        buf.writeFloatBE(0, 26);         //AV delay - rxdata[14:15]            250ms for dual pacing modes (DOO, DOOR)
-        buf.writeFloatBE(0, 30) ; //atrial amplitude - rxdata[16:19]   convert to mv by *1000
-        buf.writeFloatBE(payload.config.ventricular_amp*1000, 34) ;        //ventricular amplitude - rxdata [20:23]
-        buf.writeFloatBE(0, 38);       //MSR
-        buf.writeFloatBE(0, 42);       //reaction time
-        buf.writeFloatBE(0, 46);       //response time
-        buf.writeFloatBE(0, 50);       //activity threshold
+        buf.writeUInt16LE(1, 6);   //mode
+        buf.writeUInt16LE(0, 8);   //arfp - rxdata[8:9]
+        buf.writeUInt16LE(0, 10);  //vrfp - rxdata[10:11]
+        buf.writeUInt16LE(payload.config.ventricular_pw, 12);     //pulse width - rxdata[12:13]
+        buf.writeUInt16LE(0, 14);         //AV delay - rxdata[14:15]            250ms for dual pacing modes (DOO, DOOR)
+        buf.writeUInt16LE(0, 16) ; //atrial amplitude - rxdata[16:19]   convert to mv by *1000
+        buf.writeUInt16LE(payload.config.ventricular_amp*1000, 18) ;        //ventricular amplitude - rxdata [20:23]
+        buf.writeUInt16LE(0, 20);       //MSR
+        buf.writeUInt16LE(0, 22);       //reaction time
+        buf.writeUInt16LE(0, 24);       //response time
+        buf.writeUInt16LE(0, 26);       //activity threshold
     }
     else if (payload.mode == "AAI") {
-        buf.writeFloatBE(4, 10);   //mode
-        buf.writeFloatBE(payload.config.arp, 14);   //arfp - rxdata[8:9]
-        buf.writeFloatBE(0, 18);  //vrfp - rxdata[10:11]
-        buf.writeFloatBE(payload.config.atrial_pw, 22);     //pulse width - rxdata[12:13]
-        buf.writeFloatBE(0, 26);         //AV delay - rxdata[14:15]            250ms for dual pacing modes (DOO, DOOR)
-        buf.writeFloatBE(payload.config.atrial_amp*1000, 30) ; //atrial amplitude - rxdata[16:19]   convert to mv by *1000
-        buf.writeFloatBE(0, 34) ;        //ventricular amplitude - rxdata [20:23]
-        buf.writeFloatBE(0, 38);       //MSR
-        buf.writeFloatBE(0, 42);       //reaction time
-        buf.writeFloatBE(0, 46);       //response time
-        buf.writeFloatBE(0, 50);       //activity threshold
+        buf.writeFloatBE(4, 6);   //mode
+        buf.writeFloatBE(payload.config.arp, 8);   //arfp - rxdata[8:9]
+        buf.writeFloatBE(0, 10);  //vrfp - rxdata[10:11]
+        buf.writeFloatBE(payload.config.atrial_pw, 12);     //pulse width - rxdata[12:13]
+        buf.writeFloatBE(0, 14);         //AV delay - rxdata[14:15]            250ms for dual pacing modes (DOO, DOOR)
+        buf.writeFloatBE(payload.config.atrial_amp*1000, 16) ; //atrial amplitude - rxdata[16:19]   convert to mv by *1000
+        buf.writeFloatBE(0, 18) ;        //ventricular amplitude - rxdata [20:23]
+        buf.writeFloatBE(0, 20);       //MSR
+        buf.writeFloatBE(0, 22);       //reaction time
+        buf.writeFloatBE(0, 24);       //response time
+        buf.writeFloatBE(0, 26);       //activity threshold
     }
-    else if (payload.mode == "VVA") {   // VVI
-        buf.writeFloatBE(3, 10);   //mode
-        buf.writeFloatBE(0, 14);   //arfp - rxdata[8:9]
-        buf.writeFloatBE(payload.config.vrp, 18);  //vrfp - rxdata[10:11]
-        buf.writeFloatBE(payload.config.ventricular_pw, 22);     //pulse width - rxdata[12:13]
-        buf.writeFloatBE(0, 26);         //AV delay - rxdata[14:15]            250ms for dual pacing modes (DOO, DOOR)
-        buf.writeFloatBE(0, 30) ; //atrial amplitude - rxdata[16:19]   convert to mv by *1000
-        buf.writeFloatBE(payload.config.ventricular_amp*1000, 34) ;        //ventricular amplitude - rxdata [20:23]
-        buf.writeFloatBE(0, 38);       //MSR
-        buf.writeFloatBE(0, 42);       //reaction time
-        buf.writeFloatBE(0, 46);       //response time
-        buf.writeFloatBE(0, 50);       //activity threshold
+    else if (payload.mode == "VVI") {   // VVI
+        buf.writeFloatBE(3, 6);   //mode
+        buf.writeFloatBE(0, 8);   //arfp - rxdata[8:9]
+        buf.writeFloatBE(payload.config.vrp, 10);  //vrfp - rxdata[10:11]
+        buf.writeFloatBE(payload.config.ventricular_pw, 12);     //pulse width - rxdata[12:13]
+        buf.writeFloatBE(0, 14);         //AV delay - rxdata[14:15]            250ms for dual pacing modes (DOO, DOOR)
+        buf.writeFloatBE(0, 16) ; //atrial amplitude - rxdata[16:19]   convert to mv by *1000
+        buf.writeFloatBE(payload.config.ventricular_amp*1000, 18) ;        //ventricular amplitude - rxdata [20:23]
+        buf.writeFloatBE(0, 20);       //MSR
+        buf.writeFloatBE(0, 22);       //reaction time
+        buf.writeFloatBE(0, 24);       //response time
+        buf.writeFloatBE(0, 26);       //activity threshold
     }
-    else if (payload.mode == "VVI") {   // DOO
-        buf.writeFloatBE(5, 10);   //mode
-        buf.writeFloatBE(0, 14);   //arfp - rxdata[8:9]
-        buf.writeFloatBE(0, 18);  //vrfp - rxdata[10:11]
-        buf.writeFloatBE(payload.config.ventricular_pw, 22);     //pulse width - rxdata[12:13]
-        buf.writeFloatBE(0, 26);         //AV delay - rxdata[14:15]            250ms for dual pacing modes (DOO, DOOR)
-        buf.writeFloatBE(3900, 30) ; //atrial amplitude - rxdata[16:19]   convert to mv by *1000
-        buf.writeFloatBE(3900, 34) ;        //ventricular amplitude - rxdata [20:23]
-        buf.writeFloatBE(0, 38);       //MSR
-        buf.writeFloatBE(0, 42);       //reaction time
-        buf.writeFloatBE(0, 46);       //response time
-        buf.writeFloatBE(0, 50);       //activity threshold
+    else if (payload.mode == "DOO") {   // DOO
+        buf.writeFloatBE(5, 6);   //mode
+        buf.writeFloatBE(0, 8);   //arfp - rxdata[8:9]
+        buf.writeFloatBE(0, 10);  //vrfp - rxdata[10:11]
+        buf.writeFloatBE(payload.config.ventricular_pw, 12);     //pulse width - rxdata[12:13]
+        buf.writeFloatBE(0, 14);         //AV delay - rxdata[14:15]            250ms for dual pacing modes (DOO, DOOR)
+        buf.writeFloatBE(3900, 16) ; //atrial amplitude - rxdata[16:19]   convert to mv by *1000
+        buf.writeFloatBE(3900, 18) ;        //ventricular amplitude - rxdata [20:23]
+        buf.writeFloatBE(0, 20);       //MSR
+        buf.writeFloatBE(0, 22);       //reaction time
+        buf.writeFloatBE(0, 24);       //response time
+        buf.writeFloatBE(0, 26);       //activity threshold
     }
     /*else if (payload.mode == "VOOR") {   // VOOR
         buf.writeFloatBE(6, 10);   //mode
