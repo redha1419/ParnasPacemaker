@@ -3,7 +3,7 @@ import axios from 'axios';
 import {AuthContext} from './contexts/AuthContext';
 import Checkbox from '@material-ui/core/Checkbox';
 
-class VOO extends React.Component {
+class DOO extends React.Component {
     static contextType = AuthContext;
     //constructor -  intialize parameters for pacing mode
     constructor(props) {
@@ -11,6 +11,9 @@ class VOO extends React.Component {
       this.state = {
         error_lower:"",
         error_upper:"",
+        error_fixed_av_delay:"",
+        error_atrial_amp:"",
+        error_atrial_pw:"",
         error_ventricular_amp:"",
         error_ventricular_pw:"",
         //rate adaptive error checking
@@ -22,9 +25,11 @@ class VOO extends React.Component {
         communication: false,
         lower:"", 
         upper:"", 
+        fixed_av_delay:"", 
+        atrial_amp:"", 
+        atrial_pw:"",
         ventricular_amp:"", 
         ventricular_pw:"",
-        //rate adaptive parameters 
         maximum_sensor_rate:"",
         activity_threshold:"", 
         reaction_time:"", 
@@ -34,18 +39,21 @@ class VOO extends React.Component {
       };
     }
 
-    //this function is called when VOO mode becomes active - sends a request to the backend to save programmable parameters for current user
+    //this function is called when DOO mode becomes active - sends a request to the backend to save programmable parameters for current user
     componentDidMount(){
       console.log(this.context)
       axios.post('http://localhost:3000/getConfig',  {
         username: this.context.username
         })
-        .then( res =>{  //successful request to backend - set parameters
+        .then( res =>{
           this.setState({
-            lower: res.data.config.VOO.lower,
-            upper: res.data.config.VOO.upper,
-            ventricular_amp: res.data.config.VOO.ventricular_amp,
-            ventricular_pw: res.data.config.VOO.ventricular_pw,
+            lower: res.data.config.DOO.lower,
+            upper: res.data.config.DOO.upper,
+            fixed_av_delay: res.data.config.DOO.fixed_av_delay,
+            atrial_amp: res.data.config.DOO.atrial_amp,
+            atrial_pw: res.data.config.DOO.atrial_pw,
+            ventricular_amp: res.data.config.DOO.ventricular_amp,
+            ventricular_pw: res.data.config.DOO.ventricular_pw,
             //rate adaptive
             maximum_sensor_rate: res.data.config.AOO.maximum_sensor_rate,
             activity_threshold: res.data.config.AOO.activity_threshold,
@@ -54,18 +62,20 @@ class VOO extends React.Component {
             recovery_time: res.data.config.AOO.recovery_time
           });
         })
-        .catch(err =>{    //otherwise print error
+        .catch(err =>{
           console.log(err)
       }) 
     }
 
-   
-
     //called when 'Start!' button is clicked
     submit(e){
       //first check all values
+
       let lower = Number(document.getElementById('lower').value);
       let upper = Number(document.getElementById('upper').value);
+      let fixed_av_delay = Number(document.getElementById('fixed-av-delay').value); 
+      let atrial_amp = Number(document.getElementById('atrial-amp').value); 
+      let atrial_pw = Number(document.getElementById('atrial-pw').value);
       let ventricular_amp = Number(document.getElementById('ventricular-amp').value);
       let ventricular_pw = Number(document.getElementById('ventricular-pw').value);
       //rate adaptive
@@ -75,8 +85,7 @@ class VOO extends React.Component {
       let response_factor = !this.state.checked ? "":Number(document.getElementById('response-factor').value); 
       let recovery_time =!this.state.checked ? "" :Number(document.getElementById('recovery-time').value); 
 
-      let mode = 'VOO';
-
+      let mode = 'DOO';
       let error = false;
 
       //check for invalid inputs
@@ -96,7 +105,7 @@ class VOO extends React.Component {
         this.setState({error_upper: ""});
       }
 
-      if(ventricular_amp > 7 || ventricular_amp < 0 || !ventricular_amp ){
+      if(ventricular_amp > 7 || ventricular_amp < 0 || !ventricular_amp){
         this.setState({error_ventricular_amp: "Make sure: value is between 0V and 7V"});
         error = true;
       }
@@ -104,18 +113,44 @@ class VOO extends React.Component {
         this.setState({error_ventricular_amp: ""});
       }
 
-      if(ventricular_pw > 5 || ventricular_pw < 0 ||  !ventricular_amp){
-        this.setState({error_ventricular_pw: "Make sure: value is between 0ms and 5ms"});
+      if(ventricular_pw > 2 || ventricular_pw < 0 || !ventricular_pw){
+        this.setState({error_ventricular_pw: "Make sure: value is between 0ms and 2ms"});
         error = true;
       }
       else{
         this.setState({error_ventricular_pw: ""});
       }
 
+      console.log(fixed_av_delay)
+
+      if(fixed_av_delay < 70 || fixed_av_delay > 300 || !fixed_av_delay){
+        this.setState({error_fixed_av_delay: "Make sure: value is between 70ms and 300ms"});
+        error = true;
+      }
+      else{
+        this.setState({error_fixed_av_delay: ""});
+      }
+
+      if(atrial_amp > 7 || atrial_amp < 0 || !atrial_amp){
+        this.setState({error_atrial_amp: "Make sure: value is between 0V and 7V"});
+        error = true;
+      }
+      else{
+        this.setState({error_atrial_amp: ""});
+      }
+
+      if(atrial_pw > 5 || atrial_pw < 0 || !atrial_pw){
+        this.setState({error_atrial_pw: "Make sure: value is between 0V and 5ms"});
+        error = true;
+      }
+      else{
+        this.setState({error_atrial_pw: ""});
+      }
+
       //rate adaptive modes error checking
       if(this.state.checked)
       {
-        mode = 'VOOR';
+        mode = 'DOOR';
         if((maximum_sensor_rate < 50 || maximum_sensor_rate > 175|| !maximum_sensor_rate)){
           this.setState({error_maximum_sensor_rate: "Make sure: value is between 50ppm and 175ppm"});
           error = true;
@@ -157,7 +192,6 @@ class VOO extends React.Component {
         }
 
       }
-
       //if all inputs are valid, proceed by making sending parameters to backend to be serially communicated
       if(!error){
         //all errors clean
@@ -165,7 +199,7 @@ class VOO extends React.Component {
         axios.post('http://localhost:3000/pace',  {
           username: this.context.username,
           mode: mode,
-          config: {lower, upper, ventricular_amp, ventricular_pw,maximum_sensor_rate,activity_threshold,reaction_time,recovery_time,response_factor}
+          config: {lower, upper, ventricular_amp, ventricular_pw, fixed_av_delay, atrial_amp, atrial_pw, maximum_sensor_rate,activity_threshold,reaction_time,recovery_time,response_factor}
           })
           .then( res =>{
             this.setState({communication: true});
@@ -183,7 +217,7 @@ class VOO extends React.Component {
     handleChange(event){
       this.setState({checked: !this.state.checked });
     };
-    
+
     render() {
       return (
           <div className="box">
@@ -199,7 +233,6 @@ class VOO extends React.Component {
               }}
             />
             </div>
-            
             <div className="input-group2">
               <label>Lower Rate Limit</label>
               {this.state.error_lower === "" ?  <div></div> : <div className="error-message">{this.state.error_lower}</div> }
@@ -207,7 +240,7 @@ class VOO extends React.Component {
                 type="text"
                 name="lower"
                 id="lower"
-                value={this.state.lower || ''}
+                value={this.state.lower}
                 onChange={(event)=>{this.setState({lower: event.target.value})}}
                 className="login-input"/>
             </div>
@@ -219,7 +252,7 @@ class VOO extends React.Component {
                 type="text"
                 name="upper"
                 id="upper"
-                value={this.state.upper || ''}
+                value={this.state.upper}
                 onChange={(event)=>{this.setState({upper: event.target.value})}}
                 className="login-input"/>
             </div>
@@ -231,7 +264,7 @@ class VOO extends React.Component {
                 type="text"
                 name="ventricular-amp"
                 id="ventricular-amp"
-                value={this.state.ventricular_amp || ''}
+                value={this.state.ventricular_amp}
                 onChange={(event)=>{this.setState({ventricular_amp: event.target.value})}}
                 className="login-input"/>
             </div>
@@ -243,11 +276,48 @@ class VOO extends React.Component {
                 type="text"
                 name="ventricular-pw"
                 id="ventricular-pw"
-                value={this.state.ventricular_pw || ''}
+                value={this.state.ventricular_pw}
                 onChange={(event)=>{this.setState({ventricular_pw: event.target.value})}}
                 className="login-input"/>
             </div>
 
+            <div className="input-group2">
+              <label>Fixed Av Delay</label>
+              {this.state.error_fixed_av_delay === "" ? <div></div> :  <div className="error-message">{this.state.error_fixed_av_delay}</div>}
+              <input
+                type="text"
+                name="fixed-av-delay"
+                id="fixed-av-delay"
+                value={this.state.fixed_av_delay}
+                onChange={(event)=>{this.setState({fixed_av_delay: event.target.value})}}
+                className="login-input"/>
+            </div>
+
+            <div className="input-group2">
+              <label>Atrial Amplitude</label>
+              {this.state.error_atrial_amp === "" ? <div></div> : <div className="error-message">{this.state.error_atrial_amp}</div>}
+              <input
+                type="text"
+                name="atrial-amp"
+                id="atrial-amp"
+                value={this.state.atrial_amp}
+                onChange={(event)=>{this.setState({atrial_amp: event.target.value})}}
+                className="login-input"/>
+            </div>
+
+            <div className="input-group2">
+              <label>Atrial Pulse Width</label>
+              {this.state.error_atrial_pw === "" ? <div></div> : <div className="error-message">{this.state.error_atrial_pw}</div>}
+              <input
+                type="text"
+                name="atrial-pw"
+                id="atrial-pw"
+                value={this.state.atrial_pw || ''}
+                onChange={(event)=>{this.setState({atrial_pw: event.target.value})}}
+                className="login-input"/>
+            </div>
+
+            
             {
               this.state.checked ?
               <div>
@@ -317,6 +387,7 @@ class VOO extends React.Component {
               : null
             }
 
+
             <button
               type="button"
               className="login-btn"
@@ -330,4 +401,4 @@ class VOO extends React.Component {
   
   }
 
-  export default VOO;
+  export default DOO;

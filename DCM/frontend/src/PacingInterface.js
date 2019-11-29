@@ -4,6 +4,7 @@ import AOO from './AOO';
 import VOO from './VOO';
 import AAI from './AAI';
 import VVI from './VVI';
+import DOO from './DOO'; 
 import {AuthContext} from './contexts/AuthContext';
 import axios from 'axios';
 import logo from './pacemaker_logo.png';
@@ -18,6 +19,7 @@ class PacingInterface extends React.Component {
         isVOO: false,
         isAAI: false,
         isVVI: false,
+        isDOO: false,
         previous_maker:"",
         current_maker:""
 
@@ -46,7 +48,8 @@ class PacingInterface extends React.Component {
         isAOO: true,
         isVOO: false,
         isAAI: false,
-        isVVI: false
+        isVVI: false, 
+        isDOO: false
         }
       );
       this.props.history.push('/pacing-interface/AOO');
@@ -57,7 +60,8 @@ class PacingInterface extends React.Component {
           isAOO: false,
           isVOO: true,
           isAAI: false,
-          isVVI: false
+          isVVI: false,
+          isDOO: false
           }
         );
         this.props.history.push('/pacing-interface/VOO');
@@ -68,7 +72,8 @@ class PacingInterface extends React.Component {
           isAOO: false,
           isVOO: false,
           isAAI: true,
-          isVVI: false
+          isVVI: false,
+          isDOO: false
           }
         );
         this.props.history.push('/pacing-interface/AAI');
@@ -80,11 +85,26 @@ class PacingInterface extends React.Component {
           isAOO: false,
           isVOO: false,
           isAAI: false,
-          isVVI: true
+          isVVI: true, 
+          isDOO: false
           }
         );
         this.props.history.push('/pacing-interface/VVI');
     }
+
+    showDOOBox() {
+      this.setState({
+        isAOO: false,
+        isVOO: false,
+        isAAI: false,
+        isVVI: false, 
+        isDOO: true
+        }
+      );
+      this.props.history.push('/pacing-interface/DOO');
+  }
+
+   
   
     render() {
       console.log(this.context)
@@ -134,6 +154,15 @@ class PacingInterface extends React.Component {
               .bind(this)}>
               VVI
             </div>
+            <div
+              className={"controller " + (this.state.isDOO
+              ? "selected-controller"
+              : "")}
+              onClick={this
+              .showDOOBox
+              .bind(this)}>
+              DOO
+            </div>
           </div>
           
           <div className="interface-container">
@@ -141,8 +170,8 @@ class PacingInterface extends React.Component {
             <Route path="/pacing-interface/VOO" exact component={VOO} />
             <Route path="/pacing-interface/AAI" exact component={AAI} />
             <Route path="/pacing-interface/VVI" exact component={VVI} />
+            <Route path="/pacing-interface/DOO" exact component={DOO} />
           </div>
-  
         </div>
   
       );
