@@ -36,7 +36,7 @@ app.use('/', interface); //set our routes to the "/" location
 var io = require('socket.io')(server);
 
 //serial io
-const SerialPort = require('serialport')
+const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline')
 const ByteLength = require('@serialport/parser-byte-length')
 const path = '/dev/tty.usbmodem0000001234561';        //path for K64F board
@@ -44,17 +44,21 @@ const path = '/dev/tty.usbmodem0000001234561';        //path for K64F board
 
 io.on('connection', function (socket) {
   //here we will listen to the pacemaker and emit CONSTANTLY!!
-  let port = new SerialPort(path, { baudRate: 115200, autoOpen: true});
-  let parser = port.pipe(new ByteLength({length: 17}))
-  parser.on('data', (data)=>{
-    socket.emit('news', {hello: data});
-  }) // will have 8 bytes per data event
+  try{
+    let port = new SerialPort(path, { baudRate: 115200, autoOpen: true});
+    let parser = port.pipe(new ByteLength({length: 17}))
+    parser.on('data', (data)=>{
+      socket.emit('news', {hello: data});
+    }) // will have 8 bytes per data event
   
-  socket.on('disconnect',()=>{
-    console.log('HALLP')
-    socket.disconnect();
-    port.close();
-  })
+    socket.on('disconnect',()=>{
+      console.log('HALLP')
+      socket.disconnect();
+      port.close();
+    })
+  }catch(e){
+    console.log('couldnt open pace port...')
+  }
 });
 
 

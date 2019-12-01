@@ -8,6 +8,7 @@ import DOO from './DOO';
 import {AuthContext} from './contexts/AuthContext';
 import axios from 'axios';
 import logo from './pacemaker_logo.png';
+import electrogram_logo from './electrogram.svg'
 
 class PacingInterface extends React.Component {
     static contextType = AuthContext;
@@ -33,13 +34,13 @@ class PacingInterface extends React.Component {
         })
         .then( res =>{
           this.setState({
-            previous_maker: res.data.config.pacemaker_id
+            previous_maker: res.data.config.pacemaker_id,
+            current_maker: res.data.device
           });
         })
         .catch(err =>{
           console.log(err)
       }) 
-      this.setState({current_maker: "456"})     //placeholder value, actual ID will be serially transmitted in future
     }
   
     //functionality for tab buttons, displays pacing mode according to respective tab that is active
@@ -112,10 +113,12 @@ class PacingInterface extends React.Component {
         this.props.history.push('/')
       }
       return (
+        <div>
+        <img style={{float:"left"}}src={electrogram_logo} alt="logo" onClick={()=>{this.props.history.push('/electrogram')}} width="100" height="50"/>
         <div className="root-container">
         <img style={{paddingBottom:"30px"}}src={logo} alt="logo" onClick={()=>{this.props.history.push('/home/login')}}/>
         <div style={{paddingBottom: "50px",fontSize: "20px", color:"green"}}>
-        Current pacemaker is {this.state.current_maker} and the previous one is {this.state.previous_maker}
+        Current pacemaker is {this.state.current_maker} and the original user's is {this.state.previous_maker}
         </div>
           <div className="box-controller">
             <div
@@ -171,6 +174,7 @@ class PacingInterface extends React.Component {
             <Route path="/pacing-interface/AAI" exact component={AAI} />
             <Route path="/pacing-interface/VVI" exact component={VVI} />
             <Route path="/pacing-interface/DOO" exact component={DOO} />
+          </div>
           </div>
         </div>
   

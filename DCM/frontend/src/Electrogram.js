@@ -3,6 +3,7 @@ import './App.css';
 import ApexCharts from 'apexcharts';
 import ReactApexChart from 'react-apexcharts';
 import io from 'socket.io-client';
+import logo from './pacemaker_logo.png';
 
 var socket;
 var data_atrial = [];
@@ -137,32 +138,27 @@ class Electrogram extends React.Component {
         socket.close();
     }
 
-    intervals () {
-
-    window.setInterval(() => {
+    intervals () {}
         /*
-        getNewSeries(lastDate, {
-        min: -5,
-        max: 5
-        })
-        */
-        
-        ApexCharts.exec('realtime', 'updateSeries', [{
-            data: data_ventrical
-        }])
-        
-        ApexCharts.exec('realtime1', 'updateSeries', [{
-            data: data_atrial
-        }])
-        
-    }, 500)
+        window.setInterval(() => {
+            
+            ApexCharts.exec('realtime', 'updateSeries', [{
+                data: data_ventrical
+            }])
+            
+            ApexCharts.exec('realtime1', 'updateSeries', [{
+                data: data_atrial
+            }])
+            
+        }, 500)
     }
+    */
 
     render() {
 
     return (
         <div>
-            {this.state.data}
+            <img style={{paddingBottom:"30px"}}src={logo} alt="logo" onClick={()=>{this.props.history.push('/home/login')}}/>
             <ReactApexChart options={this.state.options1} series={this.state.series} type="line" height="350" width="500"/>
             <ReactApexChart options={this.state.options2} series={this.state.series} type="line" height="350" width="500"/>
         </div>
