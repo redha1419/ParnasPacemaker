@@ -50,11 +50,11 @@ class VVI extends React.Component {
             ventricular_pw: res.data.config.VVI.ventricular_pw,
             vrp: res.data.config.VVI.vrp,
             //rate adaptive
-            maximum_sensor_rate: res.data.config.AOO.maximum_sensor_rate,
-            activity_threshold: res.data.config.AOO.activity_threshold,
-            reaction_time: res.data.config.AOO.reaction_time, 
-            response_factor: res.data.config.AOO.response_factor,
-            recovery_time: res.data.config.AOO.recovery_time
+            maximum_sensor_rate: res.data.config.VVI.maximum_sensor_rate,
+            activity_threshold: res.data.config.VVI.activity_threshold,
+            reaction_time: res.data.config.VVI.reaction_time, 
+            response_factor: res.data.config.VVI.response_factor,
+            recovery_time: res.data.config.VVI.recovery_time
           });
         })
         .catch(err =>{

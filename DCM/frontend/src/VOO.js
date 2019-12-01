@@ -47,11 +47,11 @@ class VOO extends React.Component {
             ventricular_amp: res.data.config.VOO.ventricular_amp,
             ventricular_pw: res.data.config.VOO.ventricular_pw,
             //rate adaptive
-            maximum_sensor_rate: res.data.config.AOO.maximum_sensor_rate,
-            activity_threshold: res.data.config.AOO.activity_threshold,
-            reaction_time: res.data.config.AOO.reaction_time, 
-            response_factor: res.data.config.AOO.response_factor,
-            recovery_time: res.data.config.AOO.recovery_time
+            maximum_sensor_rate: res.data.config.VOO.maximum_sensor_rate,
+            activity_threshold: res.data.config.VOO.activity_threshold,
+            reaction_time: res.data.config.VOO.reaction_time, 
+            response_factor: res.data.config.VOO.response_factor,
+            recovery_time: res.data.config.VOO.recovery_time
           });
         })
         .catch(err =>{    //otherwise print error

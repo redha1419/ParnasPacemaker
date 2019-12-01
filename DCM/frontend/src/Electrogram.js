@@ -9,6 +9,7 @@ var socket;
 var data_atrial = [];
 var data_ventrical = [];
 var count = 0;
+var intervalId;
 class Electrogram extends React.Component {
 
     constructor(props) {
@@ -135,12 +136,13 @@ class Electrogram extends React.Component {
 
     componentWillUnmount(){
         console.log('here')
+        window.clearInterval(intervalId);
         socket.close();
     }
 
-    intervals () {}
-        /*
-        window.setInterval(() => {
+    intervals () {
+        
+        intervalId = window.setInterval(() => {
             
             ApexCharts.exec('realtime', 'updateSeries', [{
                 data: data_ventrical
@@ -152,7 +154,6 @@ class Electrogram extends React.Component {
             
         }, 500)
     }
-    */
 
     render() {
 

@@ -50,11 +50,11 @@ class AAI extends React.Component {
             atrial_pw: res.data.config.AAI.atrial_pw,
             arp: res.data.config.AAI.arp,
             //rate adaptive
-            maximum_sensor_rate: res.data.config.AOO.maximum_sensor_rate,
-            activity_threshold: res.data.config.AOO.activity_threshold,
-            reaction_time: res.data.config.AOO.reaction_time, 
-            response_factor: res.data.config.AOO.response_factor,
-            recovery_time: res.data.config.AOO.recovery_time
+            maximum_sensor_rate: res.data.config.AAI.maximum_sensor_rate,
+            activity_threshold: res.data.config.AAI.activity_threshold,
+            reaction_time: res.data.config.AAI.reaction_time, 
+            response_factor: res.data.config.AAI.response_factor,
+            recovery_time: res.data.config.AAI.recovery_time
           });
         })
         .catch(err =>{    //otherwise print error
