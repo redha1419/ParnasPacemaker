@@ -326,8 +326,7 @@ class VOO extends React.Component {
             </button>
           </div>
       );
-    }
-  
+    } 
   }
 
   export default VOO;
