@@ -1,63 +1,22 @@
 import React from 'react';
 import './App.css';
 import ApexCharts from 'apexcharts';
-import ReactApexChart from 'react-apexcharts'
+import ReactApexChart from 'react-apexcharts';
+import io from 'socket.io-client';
+import logo from './pacemaker_logo.png';
 
-
-var lastDate = 0;
-var data = []
-var TICKINTERVAL = 86400000
-let XAXISRANGE = 777600000
-function getDayWiseTimeSeries(baseval, count, yrange) {
-    var i = 0;
-    while (i < count) {
-        var x = baseval;
-        var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-
-        data.push({
-            x, y
-        });
-        lastDate = baseval
-        baseval += TICKINTERVAL;
-        i++;
-    }
-}
-
-getDayWiseTimeSeries(new Date('11 Feb 2017 GMT').getTime(), 10, {
-    min: -5,
-    max: 5
-})
-
-function getNewSeries(baseval, yrange) {
-    var newDate = baseval + TICKINTERVAL;
-    lastDate = newDate
-
-    for(var i = 0; i< data.length - 10; i++) {
-        // IMPORTANT
-        // we reset the x and y of the data which is out of drawing area
-        // to prevent memory leaks
-        data[i].x = newDate - XAXISRANGE - TICKINTERVAL
-        data[i].y = 0
-    }
-    
-    data.push({
-        x: newDate,
-        y: Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min
-    })
-    
-}
-
-function resetData(){
-    // Alternatively, you can also reset the data at certain intervals to prevent creating a huge series 
-    data = data.slice(data.length - 10, data.length);
-}
-
+var socket;
+var data_atrial = [];
+var data_ventrical = [];
+var count = 0;
+var intervalId;
 class Electrogram extends React.Component {
 
     constructor(props) {
     super(props);
-
+    count = 0; 
     this.state = {
+        data:"",
         options1: {
         chart: {
             id: 'realtime',
@@ -65,7 +24,7 @@ class Electrogram extends React.Component {
                 enabled: true,
                 easing: 'linear',
                 dynamicAnimation: {
-                speed: 1000
+                    speed: 1000
                 }
             },
             toolbar: {
@@ -90,11 +49,11 @@ class Electrogram extends React.Component {
             size: 0
             },
             xaxis: {
-            type: 'datetime',
-            range: XAXISRANGE,
+            //type: 'datetime',
+           // range: XAXISRANGE,
             },
             yaxis: {
-            max: 10
+                max: 10
             },
             legend: {
             show: false
@@ -133,8 +92,8 @@ class Electrogram extends React.Component {
                 size: 0
             },
             xaxis: {
-                type: 'datetime',
-                range: XAXISRANGE,
+            //    type: 'datetime',
+               // range: XAXISRANGE,
             },
             yaxis: {
                 max: 10
@@ -144,36 +103,63 @@ class Electrogram extends React.Component {
             }
         },
         series: [{
-        data: data.slice()
+        data: data_atrial.slice()
         }],
     }
     }
 
     componentDidMount() {
     this.intervals()
+        socket = io.connect('http://localhost:3000');
+        socket.on('news',  (data) => {
+            
+            if( new Uint8Array(data.hello)[0] === 1 ){
+                let points = new Float64Array(data.hello.slice(1,17));
+                data_atrial.push([count, Math.floor(points[0])]);
+                data_ventrical.push([count, Math.floor(points[1])]);
+                count++;
+                console.log(data_atrial);
+    
+                if(data_atrial.length > 500){
+                    data_atrial = data_atrial.slice(250, 500);
+                    data_ventrical = data_ventrical.slice(250, 500);
+                }
+            }
+            //first byte ignore
+            //next 8 atrial
+            //next 8 ventrical
+            //add these data points to my graph
+            //now here i gotta slice the data
+           //this.setState({data: data.hello});
+        });
+    }
+
+    componentWillUnmount(){
+        console.log('here')
+        window.clearInterval(intervalId);
+        socket.close();
     }
 
     intervals () {
-
-    window.setInterval(() => {
-        getNewSeries(lastDate, {
-        min: -5,
-        max: 5
-        })
         
-        ApexCharts.exec('realtime', 'updateSeries', [{
-        data: data
-        }])
-        ApexCharts.exec('realtime1', 'updateSeries', [{
-            data: data
-        }])
-    }, 1000)
+        intervalId = window.setInterval(() => {
+            
+            ApexCharts.exec('realtime', 'updateSeries', [{
+                data: data_ventrical
+            }])
+            
+            ApexCharts.exec('realtime1', 'updateSeries', [{
+                data: data_atrial
+            }])
+            
+        }, 500)
     }
 
     render() {
 
     return (
         <div>
+            <img style={{paddingBottom:"30px"}}src={logo} alt="logo" onClick={()=>{this.props.history.push('/home/login')}}/>
             <ReactApexChart options={this.state.options1} series={this.state.series} type="line" height="350" width="500"/>
             <ReactApexChart options={this.state.options2} series={this.state.series} type="line" height="350" width="500"/>
         </div>
