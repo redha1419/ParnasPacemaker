@@ -4,4 +4,4 @@ alias pg_start="launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.p
 alias pg_stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
 launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
 createdb pacemaker
-psql -f pace.sql pace
+psql -f pace.sql pacemaker
